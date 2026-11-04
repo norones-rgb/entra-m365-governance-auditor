@@ -1,0 +1,3 @@
+site_url,principal_title,principal_login,principal_type,role_names
+https://demo.sharepoint.com/sites/library,Library Members,Library Members,SharePointGroup,Read
+https://demo.sharepoint.com/sites/library,Directory Group,c:0o.c|federateddirectoryclaimprovider|55555555-5555-4555-8555-555555555555,SecurityGroup,Read

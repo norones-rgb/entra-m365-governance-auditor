@@ -1,0 +1,7 @@
+{
+  "schema": "pnp-sharepoint-v0.3",
+  "source": "synthetic PnP selected-site example",
+  "site_url": "https://demo.sharepoint.com/sites/library",
+  "collected_at_utc": "2026-11-04T14:15:00+00:00",
+  "coverage": "Selected site's root web, group roster and site administrators only"
+}

@@ -163,6 +163,7 @@ def export_snapshot(client: GraphClient, group_ids: list[str], privileged_ids: s
     groups: list[dict] = []
     memberships: list[dict] = []
     non_users: list[dict] = []
+    aliases: list[dict] = []
     owner_counts: dict[str, int] = {}
     dynamic_groups: list[str] = []
     for gid in group_ids:
@@ -189,7 +190,7 @@ def export_snapshot(client: GraphClient, group_ids: list[str], privileged_ids: s
                 non_users.append({"group_id": gid, "member_id": mid, "odata_type": kind or "unknown"})
                 continue
             if mid not in users:
-                person = client.get(f"/users/{quote(mid)}?$select=id,displayName,userType,accountEnabled,jobTitle")
+                person = client.get(f"/users/{quote(mid)}?$select=id,displayName,userType,accountEnabled,jobTitle,userPrincipalName,mail")
                 if _require_id(person, "user") != mid or not isinstance(person.get("accountEnabled"), bool):
                     raise GraphExportError("Graph returned incomplete user status; export aborted")
                 if person.get("userType") not in ("Member", "Guest"):
@@ -197,15 +198,21 @@ def export_snapshot(client: GraphClient, group_ids: list[str], privileged_ids: s
                 users[mid] = {"user_id": mid, "display_name": person.get("displayName") or mid,
                               "user_type": person["userType"], "enabled": str(person["accountEnabled"]).lower(),
                               "job_role": person.get("jobTitle") or ""}
+                for field, value in (("upn", person.get("userPrincipalName")), ("mail", person.get("mail"))):
+                    if value is not None and not isinstance(value, str):
+                        raise GraphExportError("Graph returned an invalid identity alias; export aborted")
+                    if value and value.strip():
+                        aliases.append({"user_id": mid, "alias_type": field, "alias_value": value.strip()})
             # Graph member listing provides no historical access-grant timestamp.
             memberships.append({"group_id": gid, "user_id": mid, "granted_at": ""})
     manifest = {
         "schema": "graph-partial-v0.2", "source": "Microsoft Graph v1.0", "collected_at_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
         "group_ids": group_ids, "privileged_group_ids": sorted(privileged_ids),
-        "records": {"users": len(users), "groups": len(groups), "direct_user_memberships": len(memberships),
+        "records": {"users": len(users), "groups": len(groups), "identity_aliases": len(aliases), "direct_user_memberships": len(memberships),
                     "unassessed_non_user_memberships": len(non_users)},
         "group_owner_counts": owner_counts, "dynamic_group_ids": dynamic_groups,
         "coverage": "Selected groups only; direct members only; non-user members not assessed; owners first-listed for CSV compatibility.",
+        "identity_aliases": "Optional userPrincipalName and mail aliases are exact-match hints, not proof of identity across tenants.",
         "missing": ["original membership grant dates", "approval and campaign evidence", "SharePoint site permissions", "audit/SIEM events", "PIM and directory role assignments", "nested effective membership"],
         "warning": "This is a partial inventory, not a complete governance audit. Do not run all controls without independent evidence inputs.",
     }
@@ -216,6 +223,7 @@ def export_snapshot(client: GraphClient, group_ids: list[str], privileged_ids: s
         _write_csv(staged / "groups.csv", ("group_id", "name", "privileged", "owner_id"), groups)
         _write_csv(staged / "memberships.csv", ("group_id", "user_id", "granted_at"), memberships)
         _write_csv(staged / "non_user_members.csv", ("group_id", "member_id", "odata_type"), non_users)
+        _write_csv(staged / "identity_aliases.csv", ("user_id", "alias_type", "alias_value"), aliases)
         (staged / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         staged.rename(output)
     finally:

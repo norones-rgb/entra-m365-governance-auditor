@@ -1,0 +1,10 @@
+source_view,site_url,principal_login,principal_email,principal_type,access_context,resolution,method,directory_kind,directory_id,account_enabled,review_indicator
+sharepoint_group_member,https://demo.sharepoint.com/sites/library,i:0#.f|membership|Alex@Example.Test,,User,Library Members,matched,login_upn,user,11111111-1111-4111-8111-111111111111,true,
+sharepoint_group_member,https://demo.sharepoint.com/sites/library,opaque-legacy-login,blair@example.test,User,Library Members,matched,email,user,22222222-2222-4222-8222-222222222222,false,disabled_account_in_exported_assignment
+sharepoint_group_member,https://demo.sharepoint.com/sites/library,c:0o.c|federateddirectoryclaimprovider|55555555-5555-4555-8555-555555555555,,SecurityGroup,Library Visitors,matched,object_id,group,55555555-5555-4555-8555-555555555555,,
+sharepoint_group_member,https://demo.sharepoint.com/sites/library,i:0#.f|membership|shared@example.test,,User,Library Visitors,ambiguous,login_upn,,,,
+sharepoint_group_member,https://demo.sharepoint.com/sites/library,c:0t.c|tenant|99999999-9999-4999-8999-999999999999,,SecurityGroup,Library Visitors,out_of_scope,object_id,,,,
+sharepoint_group_member,https://demo.sharepoint.com/sites/library,unknown-principal,,User,Library Visitors,unresolved,unrecognized_principal,,,,
+site_collection_admin,https://demo.sharepoint.com/sites/library,i:0#.f|membership|alex@example.test,alex@example.test,User,,matched,login_upn,user,11111111-1111-4111-8111-111111111111,true,
+root_web_role_assignment,https://demo.sharepoint.com/sites/library,Library Members,,SharePointGroup,Read,out_of_scope,local_sharepoint_group,,,,
+root_web_role_assignment,https://demo.sharepoint.com/sites/library,c:0o.c|federateddirectoryclaimprovider|55555555-5555-4555-8555-555555555555,,SecurityGroup,Read,matched,object_id,group,55555555-5555-4555-8555-555555555555,,

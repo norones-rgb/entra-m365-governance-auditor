@@ -1,0 +1,7 @@
+site_url,sharepoint_group_id,sharepoint_group,principal_login,principal_email,principal_type
+https://demo.sharepoint.com/sites/library,1,Library Members,i:0#.f|membership|Alex@Example.Test,,User
+https://demo.sharepoint.com/sites/library,1,Library Members,opaque-legacy-login,blair@example.test,User
+https://demo.sharepoint.com/sites/library,2,Library Visitors,c:0o.c|federateddirectoryclaimprovider|55555555-5555-4555-8555-555555555555,,SecurityGroup
+https://demo.sharepoint.com/sites/library,2,Library Visitors,i:0#.f|membership|shared@example.test,,User
+https://demo.sharepoint.com/sites/library,2,Library Visitors,c:0t.c|tenant|99999999-9999-4999-8999-999999999999,,SecurityGroup
+https://demo.sharepoint.com/sites/library,2,Library Visitors,unknown-principal,,User

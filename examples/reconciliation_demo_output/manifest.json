@@ -1,0 +1,29 @@
+{
+  "schema": "sp-entra-reconciliation-v0.4",
+  "source": "Offline CSV correlation, no network access",
+  "site_url": "https://demo.sharepoint.com/sites/library",
+  "source_schemas": [
+    "graph-partial-v0.2",
+    "pnp-sharepoint-v0.3"
+  ],
+  "source_time_difference_hours": 0.25,
+  "source_time_gap_gt_72_hours": false,
+  "observation_count": 9,
+  "resolution_counts": {
+    "matched": 5,
+    "ambiguous": 1,
+    "unresolved": 1,
+    "out_of_scope": 2
+  },
+  "disabled_account_review_indicators": 1,
+  "alias_coverage": "Only aliases from selected Graph users; older exports may contain no aliases.",
+  "limitations": [
+    "Not effective permissions or confirmed violations",
+    "Selected Graph groups, direct members only",
+    "Root-web roles, not child resources",
+    "No SharePoint local-group role expansion",
+    "No cross-tenant identity verification",
+    "No approval history, grant dates or review outcomes"
+  ],
+  "privacy_warning": "Report includes login/email/identity information; never commit real report outputs to public source control."
+}

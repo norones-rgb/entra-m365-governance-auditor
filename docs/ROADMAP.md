@@ -26,9 +26,17 @@
 - [x] Offline synthetic access-review demo, test coverage, and documentation
 - [x] Optional PnP selected-site SharePoint inventory script (requires live test and authorized tenancy)
 - [ ] Validated live PnP/Graph permission and paging integration against an explicitly authorized test tenant
-- [ ] Auditable identity correlation and coverage mapping between Graph/PnP output and local evaluation schemas
+- [x] Offline strict-identifier matching of Graph/PnP exports with explicit match and coverage reports (v0.4, synthetic-tested)
 
-## v0.4 — deeper assessment (not implemented)
+## v0.4 — offline identity correlation
+
+- [x] Exact GUID, UPN, and mail correlation for exported SharePoint principals
+- [x] Separate Graph alias inventory without changing the existing normalized user schema
+- [x] Ambiguous and out-of-scope classifications, disabled-account review indicators, source provenance
+- [x] HTML/CSV export and regression-tested synthetic demonstration
+- [ ] Live test against explicitly authorized Entra and SharePoint tenant
+
+## Future — deeper assessment (not implemented)
 
 - [ ] Configurable controls, risk scoring and control ownership
 - [ ] Optional Maester security assessment integration (where access is authorized)
