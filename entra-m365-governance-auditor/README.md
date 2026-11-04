@@ -104,7 +104,7 @@ Read [ARCHITECTURE](docs/ARCHITECTURE.md), [DATA DICTIONARY](docs/DATA_DICTIONAR
 
 ## Professional context
 
-Built as an original demonstrator of identity operations, privileged access governance, access-review campaigns, audit evidence, security-minded engineering, and documentation. This is **not** affiliated with Microsoft, SailPoint, Discover, Capital One, or CAS.
+Built as an original demonstrator of identity operations, privileged access governance, access-review campaigns, audit evidence, security-minded engineering, and documentation. This is **not** affiliated with Microsoft, SailPoint
 
 ## License
 
