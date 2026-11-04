@@ -1,0 +1,206 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-11-04",
+  "notice": "Snapshot-based heuristic findings; not proof of actual access risk or an exhaustive tenant audit.",
+  "counts": {
+    "open": 10,
+    "excepted": 1,
+    "high": 4,
+    "medium": 6,
+    "correlated_evidence": 2,
+    "controls_evaluated": 9
+  },
+  "source_record_counts": {
+    "users": 8,
+    "groups": 4,
+    "memberships": 7,
+    "approvals": 6,
+    "sites": 3,
+    "site_permissions": 5,
+    "campaigns": 4,
+    "audit_events": 5,
+    "exceptions": 1
+  },
+  "input_sha256": {
+    "users.csv": "f2b66dc74a61b7a02b32d476c690fb845698c63daf8d4bb27a483bbc6649f530",
+    "groups.csv": "6f8ef6dabc7ea08a89cb79b7d50b32ee046a88865b5bc78a414e8411bc6a8845",
+    "memberships.csv": "286622ad8df16931aa2843a87c8370dd02c8cb42195debd773ee62594d06cfde",
+    "approvals.csv": "a8a58461ff53803f5a4bed7382484e48fe3b9c0bc66b62c35f82f502a878d139",
+    "sites.csv": "117555d3b0cf5695b775aaf978b4bff3321c669c8c2867fab85add1e46a7c6bf",
+    "site_permissions.csv": "64ef5f57790d5011b3db0d3cb1b1eee8bdca6af4e5cb168567ed979620208583",
+    "campaigns.csv": "2cfd22578b653b7887ae07d42e247e096fe1286b9a32c61a291096709d22cde4",
+    "audit_events.csv": "f3906b86ef25670a8c44dad5d8c7a16efdf4f88795cb09242ace20d32c68f7a1",
+    "exceptions.csv": "8c5769bab4f8439f988d7633215e22713949b29161d3154ec1b38ac00f82609a"
+  },
+  "findings": [
+    {
+      "control_id": "PRV-001",
+      "severity": "high",
+      "subject": "u02",
+      "resource": "Endpoint-Local-Administrators",
+      "title": "Privileged membership lacks a current approval",
+      "detail": "No approved, unexpired request for this direct group membership was present in the snapshot.",
+      "recommendation": "Locate approval evidence or request an authorized access review; do not automatically revoke.",
+      "evidence_keys": [
+        "membership:G_LOCALADM:u02"
+      ],
+      "status": "open",
+      "exception_reason": "",
+      "exception_expires": ""
+    },
+    {
+      "control_id": "PRV-002",
+      "severity": "high",
+      "subject": "u05",
+      "resource": "Infrastructure-Privileged-Operators",
+      "title": "Approval was recorded after privileged access was granted",
+      "detail": "Membership granted 2026-09-07; approval recorded 2026-09-12.",
+      "recommendation": "Verify emergency-access exception or investigate the sequence.",
+      "evidence_keys": [
+        "REQ-103"
+      ],
+      "status": "open",
+      "exception_reason": "",
+      "exception_expires": ""
+    },
+    {
+      "control_id": "PRV-003",
+      "severity": "high",
+      "subject": "u03",
+      "resource": "Endpoint-Local-Administrators",
+      "title": "Disabled identity retains privileged membership",
+      "detail": "The identity is marked disabled but retains a direct privileged group membership.",
+      "recommendation": "Confirm current status and removal requirements with the application/group owner.",
+      "evidence_keys": [],
+      "status": "open",
+      "exception_reason": "",
+      "exception_expires": ""
+    },
+    {
+      "control_id": "SP-001",
+      "severity": "high",
+      "subject": "u04",
+      "resource": "Knowledge-Repository",
+      "title": "External access to sensitive SharePoint site lacks current approval",
+      "detail": "Guest/external identity has Read on a restricted site without a matching approved site request in the export.",
+      "recommendation": "Validate business sponsor, approved sharing exception and access necessity.",
+      "evidence_keys": [],
+      "status": "open",
+      "exception_reason": "",
+      "exception_expires": ""
+    },
+    {
+      "control_id": "AUD-001",
+      "severity": "medium",
+      "subject": "u05",
+      "resource": "Infrastructure-Privileged-Operators",
+      "title": "Audit evidence correlation incomplete",
+      "detail": "No current approval has both a matching IGA approval_recorded event and SIEM membership_change event in this export.",
+      "recommendation": "Verify log coverage, retention, request-ID mapping and export completeness before treating this as a control failure.",
+      "evidence_keys": [
+        "REQ-103"
+      ],
+      "status": "open",
+      "exception_reason": "",
+      "exception_expires": ""
+    },
+    {
+      "control_id": "PRV-004",
+      "severity": "medium",
+      "subject": "G_NETOPS",
+      "resource": "Infrastructure-Privileged-Operators",
+      "title": "Privileged group has no recorded owner",
+      "detail": "The exported group owner field is blank.",
+      "recommendation": "Confirm ownership in Entra and update the authoritative inventory.",
+      "evidence_keys": [],
+      "status": "open",
+      "exception_reason": "",
+      "exception_expires": ""
+    },
+    {
+      "control_id": "REV-001",
+      "severity": "medium",
+      "subject": "CAM-001",
+      "resource": "G_LOCALADM",
+      "title": "Access-review campaign overdue",
+      "detail": "user_access campaign due 2026-10-30 is in_progress.",
+      "recommendation": "Contact the campaign owner, document the blocker, and obtain review completion evidence.",
+      "evidence_keys": [],
+      "status": "open",
+      "exception_reason": "",
+      "exception_expires": ""
+    },
+    {
+      "control_id": "REV-001",
+      "severity": "medium",
+      "subject": "CAM-002",
+      "resource": "IT-Privileged-Roles",
+      "title": "Access-review campaign overdue",
+      "detail": "job_role campaign due 2026-11-01 is open.",
+      "recommendation": "Contact the campaign owner, document the blocker, and obtain review completion evidence.",
+      "evidence_keys": [],
+      "status": "open",
+      "exception_reason": "",
+      "exception_expires": ""
+    },
+    {
+      "control_id": "SP-002",
+      "severity": "medium",
+      "subject": "S_INFRA",
+      "resource": "Infrastructure-Operations",
+      "title": "SharePoint site has no recorded owner",
+      "detail": "The source export did not identify a site owner.",
+      "recommendation": "Validate the site owner in SharePoint and update inventory.",
+      "evidence_keys": [],
+      "status": "open",
+      "exception_reason": "",
+      "exception_expires": ""
+    },
+    {
+      "control_id": "SP-003",
+      "severity": "medium",
+      "subject": "u03",
+      "resource": "Infrastructure-Operations",
+      "title": "Disabled identity retains SharePoint permission",
+      "detail": "Direct exported site permission: Read.",
+      "recommendation": "Validate account status and site permissions; follow approved offboarding process.",
+      "evidence_keys": [],
+      "status": "open",
+      "exception_reason": "",
+      "exception_expires": ""
+    },
+    {
+      "control_id": "PRV-001",
+      "severity": "high",
+      "subject": "u06",
+      "resource": "Infrastructure-Privileged-Operators",
+      "title": "Privileged membership lacks a current approval",
+      "detail": "No approved, unexpired request for this direct group membership was present in the snapshot.",
+      "recommendation": "Locate approval evidence or request an authorized access review; do not automatically revoke.",
+      "evidence_keys": [
+        "membership:G_NETOPS:u06"
+      ],
+      "status": "excepted",
+      "exception_reason": "Synthetic approved temporary exception pending renewal",
+      "exception_expires": "2026-12-31"
+    }
+  ],
+  "evidence": [
+    {
+      "request_id": "REQ-100",
+      "user_id": "u01",
+      "resource_id": "G_LOCALADM",
+      "iga_events": "EVT-001",
+      "siem_events": "EVT-002",
+      "status": "correlated"
+    },
+    {
+      "request_id": "REQ-102",
+      "user_id": "u03",
+      "resource_id": "G_LOCALADM",
+      "iga_events": "EVT-003",
+      "siem_events": "EVT-004",
+      "status": "correlated"
+    }
+  ]
+}

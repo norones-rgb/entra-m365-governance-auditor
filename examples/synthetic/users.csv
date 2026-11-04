@@ -1,0 +1,9 @@
+user_id,display_name,user_type,enabled,job_role
+u01,Ava Chen,Member,true,Endpoint Engineer
+u02,Jonah Ortiz,Member,true,IT Support
+u03,Morgan Lee,Member,false,Finance Analyst
+u04,Casey Shah,Guest,true,External Consultant
+u05,Talia Brooks,Member,true,Network Analyst
+u06,Remy Haddad,Member,true,Operations Specialist
+u07,Harper Young,Member,true,Security Engineer
+u08,Eli Moore,Guest,true,External Auditor

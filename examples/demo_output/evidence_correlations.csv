@@ -1,0 +1,3 @@
+request_id,user_id,resource_id,iga_events,siem_events,status
+REQ-100,u01,G_LOCALADM,EVT-001,EVT-002,correlated
+REQ-102,u03,G_LOCALADM,EVT-003,EVT-004,correlated

@@ -1,0 +1,5 @@
+campaign_id,type,resource_id,owner_id,due_date,status
+CAM-001,user_access,G_LOCALADM,u07,2026-10-30,in_progress
+CAM-002,job_role,IT-Privileged-Roles,u07,2026-11-01,open
+CAM-003,sharepoint,S_KNOW,u05,2026-12-01,in_progress
+CAM-004,user_access,G_KNOW,u05,2026-10-01,completed
