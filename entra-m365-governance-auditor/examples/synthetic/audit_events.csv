@@ -1,6 +1,0 @@
-event_id,source,request_id,user_id,resource_id,event_type,occurred_at
-EVT-001,SailPoint,REQ-100,u01,G_LOCALADM,approval_recorded,2026-08-30
-EVT-002,Sentinel,REQ-100,u01,G_LOCALADM,membership_change,2026-09-01
-EVT-003,SailPoint,REQ-102,u03,G_LOCALADM,approval_recorded,2026-08-09
-EVT-004,Sentinel,REQ-102,u03,G_LOCALADM,membership_change,2026-08-10
-EVT-005,SailPoint,REQ-103,u05,G_NETOPS,approval_recorded,2026-09-12
