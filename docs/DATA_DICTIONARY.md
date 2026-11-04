@@ -31,3 +31,13 @@ The synthetic data uses stable **fictional** IDs rather than any real company's 
 - Duplicate memberships/site grants are not normalized; source extractors should de-duplicate these records.
 - The tool does not confirm that an approval is tied to the specific original grant event beyond matching identity/resource IDs.
 - Owner references and campaign statuses are based on source data, not live directory resolution.
+
+
+## v0.3 standalone exports (separate from the normalized nine-table engine)
+
+- `review_instances.csv`: definition ID/name, instance ID, Graph status, start/due timestamps, overdue **indicator** at an explicit UTC instant, and aggregate decision status counts. **No participant IDs** or individual decision reasons.
+- `sharepoint_group_members.csv`: selected site URL, SharePoint group ID/name, principal login/email/type; these are **direct** group roster entries.
+- `site_collection_admins.csv`: selected site URL and returned administrators.
+- `root_web_role_assignments.csv`: selected root-web principals and role definition names; **not effective access** or list/item sharing.
+
+Do **not** treat these as direct substitutes for `approvals.csv`, `campaigns.csv` or `site_permissions.csv`: different identifiers, missing grant dates and incomplete inheritance information would make that misleading.

@@ -15,12 +15,20 @@
 - [x] Delegated Microsoft Graph selected-group exporter for group owners, user status and direct memberships with pagination and read-only scopes
 - [x] Explicit limitation manifest, no invented grant dates or approval evidence, network-free connector tests
 - [ ] Explicit transitive group membership handling
-- [ ] SharePoint/PnP exporter with documented permission/inheritance model
+- [x] SharePoint/PnP **selected-site** group/site-admin/root-web permission inventory; live tenant integration **unverified**
 - [ ] IGA export adapters and SIEM event/Log Analytics parsers, each mapping to normalized source schemas
 - [ ] Import validation for deleted users, duplicate records, partial exports and source freshness
 - [ ] Tenant-local report encryption and redaction options
 
-## v0.3 — assessment depth (not implemented)
+## v0.3 — selected access reviews and SharePoint inventory
+
+- [x] Read-only Graph selected-review definitions, instances, decision-count snapshots, and HTML report
+- [x] Offline synthetic access-review demo, test coverage, and documentation
+- [x] Optional PnP selected-site SharePoint inventory script (requires live test and authorized tenancy)
+- [ ] Validated live PnP/Graph permission and paging integration against an explicitly authorized test tenant
+- [ ] Auditable identity correlation and coverage mapping between Graph/PnP output and local evaluation schemas
+
+## v0.4 — deeper assessment (not implemented)
 
 - [ ] Configurable controls, risk scoring and control ownership
 - [ ] Optional Maester security assessment integration (where access is authorized)

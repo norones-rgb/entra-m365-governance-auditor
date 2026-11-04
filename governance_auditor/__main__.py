@@ -22,7 +22,31 @@ def main(argv: list[str] | None = None) -> int:
     graph.add_argument("--group-id", action="append", required=True, help="Group GUID (repeatable)")
     graph.add_argument("--privileged-group-id", action="append", default=[], help="Explicit privileged group GUID (repeatable)")
     graph.add_argument("--output", type=Path, required=True, help="New local export directory, ideally under reports/")
+    reviews = sub.add_parser("review-export", help="Read-only Graph access-review status/decision-count export")
+    reviews.add_argument("--tenant-id", required=True, help="Entra tenant GUID")
+    reviews.add_argument("--client-id", required=True, help="Public-client app registration GUID")
+    reviews.add_argument("--definition-id", action="append", required=True, help="Review definition GUID (repeatable)")
+    reviews.add_argument("--output", type=Path, required=True, help="Fresh local output directory, ideally under reports/")
+    reviews.add_argument("--as-of", help="UTC evaluation ISO timestamp (defaults to now)")
     args = parser.parse_args(argv)
+    if args.command == "review-export":
+        from .graph_export import GraphClient, GraphExportError, acquire_delegated_token, valid_guid
+        from .review_export import REVIEW_SCOPES, export_reviews, _parse_date_time
+        try:
+            tenant = valid_guid(args.tenant_id, "--tenant-id")
+            client_id = valid_guid(args.client_id, "--client-id")
+            definitions = [valid_guid(i, "--definition-id") for i in args.definition_id]
+            as_of = _parse_date_time(args.as_of, "--as-of") if args.as_of else None
+            if args.output.exists():
+                raise GraphExportError("Output path already exists; choose a new directory")
+            token = acquire_delegated_token(tenant, client_id, REVIEW_SCOPES)
+            summary = export_reviews(GraphClient(token), definitions, args.output, as_of)
+        except (GraphExportError, OSError) as exc:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            return 2
+        print(f"Exported {summary['instance_count']} review instances from {len(definitions)} selected definitions to {args.output}")
+        print("This read-only report contains decision counts, not individual decision identities or approval evidence.")
+        return 0
     if args.command == "graph-export":
         from .graph_export import GraphClient, GraphExportError, acquire_delegated_token, export_snapshot, valid_guid
         try:
