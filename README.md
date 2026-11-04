@@ -1,10 +1,10 @@
 # Entra & Microsoft 365 Access Governance Auditor
 
-**An offline, read-only portfolio project for identity governance, SharePoint access oversight, and audit evidence reconciliation.**
+**A read-only portfolio toolkit for identity governance, selected Microsoft Entra access reviews, SharePoint site inventory, and audit evidence reconciliation.**
 
 [![Tests](https://github.com/norones-rgb/entra-m365-governance-auditor/actions/workflows/tests.yml/badge.svg)](https://github.com/norones-rgb/entra-m365-governance-auditor/actions/workflows/tests.yml) · **Python 3.11+** · Dependency-free offline engine · Optional MSAL for Graph · Synthetic dataset included
 
-> **Version 0.2:** The auditor still runs offline against normalized CSV. An **optional read-only Graph exporter** can collect selected Entra groups and direct user memberships after explicit authorized sign-in. It does not connect to SharePoint, IGA/SIEM, or evaluate real tenant policies. The public demo and all samples use fabricated data.
+> **Version 0.3 (feature branch):** The offline synthetic auditor is unchanged. Optional read-only collectors can inspect **explicitly selected** Entra groups, selected access-review definitions through Graph, and a single SharePoint site through PnP PowerShell. Live tenants have **not** been used to test the new collectors. None of these source views establishes effective access or compliance; no real tenant data is committed.
 
 ## Why this exists
 
@@ -54,6 +54,26 @@ python -m governance_auditor graph-export --tenant-id <TENANT-GUID> --client-id 
 
 Read [Graph exporter setup and limitations](docs/GRAPH_EXPORT.md) before using real tenant access. All real exports must stay outside public source control.
 
+## Selected access reviews and SharePoint inventory (v0.3)
+
+After setting up approved delegated `AccessReview.Read.All` access for a **public-client** app registration, inspect **specific** review definitions, without individual identities in the report:
+
+```bash
+python -m governance_auditor review-export --tenant-id <TENANT-GUID> --client-id <APP-GUID> --definition-id <REVIEW-DEFINITION-GUID> --output reports/reviews-example
+```
+
+A fully offline synthetic demo works without any sign-in:
+
+```bash
+python run_review_demo.py
+```
+
+View the committed [synthetic access-review dashboard](examples/review_demo_output/dashboard.html) without any tenant connection.
+
+For site collection administrators, SharePoint group rosters, and root-web role assignments **on one authorized site**, use the optional `sharepoint/Export-SitePermissions.ps1` PnP script. It does not calculate nested/effective permissions or traverse list and item permissions. Live PnP behavior has **not** been validated in a tenant.
+
+Read [Access review documentation](docs/ACCESS_REVIEW_EXPORT.md) and [SharePoint inventory documentation](docs/SHAREPOINT_EXPORT.md) before connecting to a real environment. Only the offline synthetic demos are suitable for the public repository.
+
 ## Controls
 
 | ID | Severity | Check |
@@ -80,18 +100,22 @@ The dataset includes invented identities, privileged groups, knowledge-library-s
 python -m unittest discover -s tests -v
 ```
 
-CI runs the offline engine and Graph mock tests, plus the synthetic scenario, through GitHub Actions on push and pull request. No tenant credentials are needed.
+CI runs the offline engine, mocked Graph/review integration tests, and synthetic scenarios through GitHub Actions on push and pull request. No tenant credentials are needed. The PnP script has only static safety checks in CI and still requires live integration testing.
 
 ## Repository map
 
 ```text
 ├── governance_auditor/
 │   ├── __main__.py      # CLI
+│   ├── graph_export.py  # Selected Entra group inventory
+│   ├── review_export.py # Selected Graph review status and decision counts
 │   ├── engine.py        # Snapshot validator and rule engine
 │   └── reporting.py     # Offline HTML, JSON, CSV, checksums
 ├── examples/synthetic/  # Invented, reproducible sample records
 ├── examples/demo_output/  # Pre-generated demonstration reports
 ├── assets/dashboard-preview.png
+├── sharepoint/Export-SitePermissions.ps1 # Optional PnP site inventory (live unverified)
+├── run_review_demo.py # Offline, fabricated review demo
 ├── requirements-graph.txt  # Optional MSAL auth dependency
 ├── tests/               # Regression, safety and validation tests
 ├── docs/
@@ -101,15 +125,17 @@ CI runs the offline engine and Graph mock tests, plus the synthetic scenario, th
 │   ├── SECURITY.md
 │   ├── INTERVIEW_DEMO.md
 │   ├── GRAPH_EXPORT.md
+│   ├── ACCESS_REVIEW_EXPORT.md
+│   ├── SHAREPOINT_EXPORT.md
 │   └── ROADMAP.md
 └── .github/workflows/tests.yml
 ```
 
 ## What the app does *not* do
 
-- Graph supports **selected groups and direct user memberships only**. No PnP PowerShell/SharePoint authentication yet.
+- Entra Graph group export supports **selected groups and direct user memberships only**. The separate review exporter summarizes **selected** campaigns. The PnP script inventories one selected site root and is not live-tenant validated.
 - No Conditional Access, PIM policy configuration, Intune, endpoint compliance, or tenant security hardening checks.
-- No transitive/nested group resolution, dynamic group expansion, SharePoint inheritance traversal, or effective-permissions calculation.
+- No transitive/nested group resolution, dynamic group expansion, SharePoint list/item inheritance traversal, or effective-permissions calculation. Review decisions are reported as counts, not independently validated approval evidence.
 - No certification of regulatory compliance, automatic revocation, or auto-remediation.
 - No guarantee of completeness if source systems have inconsistent IDs, missing activity, retention gaps, or inaccurate exported owners.
 

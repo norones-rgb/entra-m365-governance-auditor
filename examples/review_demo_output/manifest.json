@@ -1,0 +1,19 @@
+{
+  "schema": "graph-reviews-v0.3",
+  "source": "Microsoft Graph v1.0",
+  "collected_at_utc": "2026-11-04T18:43:27.486063+00:00",
+  "as_of_utc": "2026-11-04T00:00:00+00:00",
+  "selected_definition_ids": [
+    "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+  ],
+  "instance_count": 1,
+  "overdue_indicators": 1,
+  "review_status_coverage": "Only selected definitions and returned instances; per-instance decision counts, not participant-level records.",
+  "limitations": [
+    "No assessment of reviewer decisions or quality",
+    "No automatic revocation or remediation",
+    "No participant identities included",
+    "Missing instances or due dates cannot establish compliance",
+    "Read access is subject to Entra roles and license eligibility"
+  ]
+}

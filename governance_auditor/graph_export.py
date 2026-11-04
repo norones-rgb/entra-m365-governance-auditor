@@ -113,14 +113,14 @@ class GraphClient:
         return results
 
 
-def acquire_delegated_token(tenant_id: str, client_id: str) -> str:
+def acquire_delegated_token(tenant_id: str, client_id: str, scopes: list[str] | None = None) -> str:
     """MSAL device-code sign-in; no secrets or persistent token cache."""
     try:
         import msal
     except ImportError:
         raise GraphExportError("Install optional authentication dependency: pip install -r requirements-graph.txt") from None
     app = msal.PublicClientApplication(client_id, authority=f"https://login.microsoftonline.com/{tenant_id}")
-    flow = app.initiate_device_flow(scopes=SCOPES)
+    flow = app.initiate_device_flow(scopes=scopes if scopes is not None else SCOPES)
     if "user_code" not in flow:
         raise GraphExportError("Microsoft sign-in could not begin; check app registration and delegated permissions")
     print(flow.get("message", "Complete the Microsoft device-code sign-in."))

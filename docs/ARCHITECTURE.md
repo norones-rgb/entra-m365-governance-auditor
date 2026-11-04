@@ -48,3 +48,10 @@ Read-only export adapters should remain **optional**, run with explicitly grante
 ### v0.2 optional exporter
 
 `graph_export.py` performs MSAL device-code authentication with delegated read-only scopes and fetches only explicit group IDs, their owners, direct members and corresponding user details. It rejects non-Graph nextLink hosts, handles limited 429/5xx retries, and writes a self-labeled **partial inventory** to a new local folder. No approval history or grant dates are generated. See [GRAPH_EXPORT](GRAPH_EXPORT.md).
+
+
+## Optional v0.3 collectors (not fed directly into the v0.1 rule engine)
+
+- `review-export`: selected Graph access-review definition IDs -> instances -> decision counts -> `review_instances.csv`, manifest and HTML status report. No participant or reviewer identities are written. It requires delegated `AccessReview.Read.All`.
+- `sharepoint/Export-SitePermissions.ps1`: PnP PowerShell inventory for exactly one authorized site: site collection administrators, SharePoint group rosters, and root-web role assignments. All records remain **direct inventory**, not effective permissions. Live integration remains unverified.
+- Neither source is silently converted into an `approvals.csv`, `campaigns.csv` or `site_permissions.csv` record. That conversion would require a documented identity mapping, coverage, historical attribution and validation.
