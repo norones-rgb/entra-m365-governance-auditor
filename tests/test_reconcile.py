@@ -85,7 +85,7 @@ class ReconciliationTests(unittest.TestCase):
     def test_duplicate_graph_user_rejected(self):
         p = self.root / "graph" / "users.csv"
         with p.open("a", encoding="utf8") as h:
-            h.write("11111111-1111-4111-8111-111111111111,Clone,Member,true,Analyst\n")
+            h.write("\n11111111-1111-4111-8111-111111111111,Clone,Member,true,Analyst\n")
         with self.assertRaisesRegex(ReconcileError, "Duplicate"):
             reconcile(self.root / "graph", self.root / "sharepoint", self.output)
 
