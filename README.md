@@ -2,9 +2,9 @@
 
 **An offline, read-only portfolio project for identity governance, SharePoint access oversight, and audit evidence reconciliation.**
 
-[![Tests](https://img.shields.io/badge/tests-10%20passing-2f855a)](#tests) · **Python 3.11+** · No third-party packages · Synthetic dataset included
+[![Tests](https://github.com/norones-rgb/entra-m365-governance-auditor/actions/workflows/tests.yml/badge.svg)](https://github.com/norones-rgb/entra-m365-governance-auditor/actions/workflows/tests.yml) · **Python 3.11+** · Dependency-free offline engine · Optional MSAL for Graph · Synthetic dataset included
 
-> **Version 0.1 (portfolio MVP):** Reads normalized CSV exports. It **does not** connect to Microsoft Entra ID, SharePoint, IGA, or SIEM, cannot verify real tenant policies, and never modifies accounts or permissions. Everything under `examples/synthetic` is fabricated for demonstration.
+> **Version 0.2:** The auditor still runs offline against normalized CSV. An **optional read-only Graph exporter** can collect selected Entra groups and direct user memberships after explicit authorized sign-in. It does not connect to SharePoint, IGA/SIEM, or evaluate real tenant policies. The public demo and all samples use fabricated data.
 
 ## Why this exists
 
@@ -43,6 +43,17 @@ On Windows PowerShell, place the command on one line, or replace `\` with backti
 
 **Outputs:** `dashboard.html` (standalone, searchable/filterable), `findings.csv`, `findings.json`, `evidence_correlations.csv`, and `report_sha256.txt`.
 
+## Optional live Microsoft Graph inventory (v0.2)
+
+The `graph-export` command collects a **partial** inventory for explicitly selected Entra group GUIDs, with delegated, read-only permissions. It does not write to the tenant or fabricate approval evidence, group grant timestamps, or SharePoint permissions. **It is not a full audit.**
+
+```bash
+python -m pip install -r requirements-graph.txt
+python -m governance_auditor graph-export --tenant-id <TENANT-GUID> --client-id <APP-GUID> --group-id <GROUP-GUID> --output reports/graph-example
+```
+
+Read [Graph exporter setup and limitations](docs/GRAPH_EXPORT.md) before using real tenant access. All real exports must stay outside public source control.
+
 ## Controls
 
 | ID | Severity | Check |
@@ -69,7 +80,7 @@ The dataset includes invented identities, privileged groups, knowledge-library-s
 python -m unittest discover -s tests -v
 ```
 
-CI runs these tests and the synthetic scenario through GitHub Actions on push and pull request.
+CI runs the offline engine and Graph mock tests, plus the synthetic scenario, through GitHub Actions on push and pull request. No tenant credentials are needed.
 
 ## Repository map
 
@@ -81,6 +92,7 @@ CI runs these tests and the synthetic scenario through GitHub Actions on push an
 ├── examples/synthetic/  # Invented, reproducible sample records
 ├── examples/demo_output/  # Pre-generated demonstration reports
 ├── assets/dashboard-preview.png
+├── requirements-graph.txt  # Optional MSAL auth dependency
 ├── tests/               # Regression, safety and validation tests
 ├── docs/
 │   ├── ARCHITECTURE.md
@@ -88,13 +100,14 @@ CI runs these tests and the synthetic scenario through GitHub Actions on push an
 │   ├── CONTROL_RATIONALE.md
 │   ├── SECURITY.md
 │   ├── INTERVIEW_DEMO.md
+│   ├── GRAPH_EXPORT.md
 │   └── ROADMAP.md
 └── .github/workflows/tests.yml
 ```
 
 ## What the app does *not* do
 
-- No Microsoft Graph or PnP PowerShell live authentication yet.
+- Graph supports **selected groups and direct user memberships only**. No PnP PowerShell/SharePoint authentication yet.
 - No Conditional Access, PIM policy configuration, Intune, endpoint compliance, or tenant security hardening checks.
 - No transitive/nested group resolution, dynamic group expansion, SharePoint inheritance traversal, or effective-permissions calculation.
 - No certification of regulatory compliance, automatic revocation, or auto-remediation.

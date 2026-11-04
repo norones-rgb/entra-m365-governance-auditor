@@ -10,9 +10,10 @@
 - [x] Synthetic demo and unit tests
 - [x] CI workflow
 
-## v0.2 — Microsoft integrations (not implemented)
+## v0.2 — Optional Microsoft Graph selected-group exporter
 
-- [ ] Microsoft Graph exporter for Entra groups, user status and direct memberships with pagination and least-privilege scopes
+- [x] Delegated Microsoft Graph selected-group exporter for group owners, user status and direct memberships with pagination and read-only scopes
+- [x] Explicit limitation manifest, no invented grant dates or approval evidence, network-free connector tests
 - [ ] Explicit transitive group membership handling
 - [ ] SharePoint/PnP exporter with documented permission/inheritance model
 - [ ] IGA export adapters and SIEM event/Log Analytics parsers, each mapping to normalized source schemas
