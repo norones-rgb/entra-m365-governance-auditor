@@ -1,0 +1,7 @@
+request_id,user_id,resource_type,resource_id,status,approved_at,expires_at
+REQ-100,u01,group,G_LOCALADM,approved,2026-08-30,2026-12-31
+REQ-102,u03,group,G_LOCALADM,approved,2026-08-09,2026-12-31
+REQ-103,u05,group,G_NETOPS,approved,2026-09-12,2026-12-31
+REQ-106,u06,group,G_NETOPS,approved,2026-01-01,2026-10-31
+REQ-104,u08,site,S_RDL,approved,2026-09-01,2026-12-31
+REQ-105,u04,site,S_RDL,approved,2026-01-02,2026-10-01

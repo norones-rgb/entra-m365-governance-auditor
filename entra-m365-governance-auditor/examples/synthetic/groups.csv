@@ -1,0 +1,5 @@
+group_id,name,privileged,owner_id
+G_LOCALADM,Endpoint-Local-Administrators,true,u07
+G_NETOPS,Payment-Network-Operators,true,
+G_RDL,RDL-SharePoint-Readers,false,u05
+G_APP,Business-Application-Users,false,u01
