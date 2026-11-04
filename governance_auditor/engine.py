@@ -115,10 +115,13 @@ def load_snapshot(folder: Path) -> tuple[dict[str, list[dict]], dict[str, str]]:
         ids = [row[key] for row in data[table]]
         if any(not v for v in ids) or len(ids) != len(set(ids)):
             raise ValueError(f"{table}.csv has duplicate or blank {key}")
-    for table, col in [("memberships", "granted_at"), ("site_permissions", "granted_at"),
+    for table, col in [("site_permissions", "granted_at"),
                        ("campaigns", "due_date"), ("audit_events", "occurred_at")]:
         for i, row in enumerate(data[table], 2):
             parse_date(row[col], f"{table}.csv:{i}:{col}")
+    for i, row in enumerate(data["memberships"], 2):
+        if row["granted_at"]:
+            parse_date(row["granted_at"], f"memberships.csv:{i}:granted_at")
     for table, col in [("approvals", "approved_at"), ("approvals", "expires_at"),
                        ("exceptions", "expires_on")]:
         for i, row in enumerate(data[table], 2):
@@ -162,7 +165,8 @@ def run_checks(data: dict[str, list[dict]], hashes: dict[str, str], as_of: dt.da
         if not is_true(group["privileged"]):
             continue
         uid, gid = user["user_id"], group["group_id"]
-        granted = parse_date(membership["granted_at"], f"membership {uid}/{gid}")
+        granted = (parse_date(membership["granted_at"], f"membership {uid}/{gid}")
+                   if membership["granted_at"] else None)
         matched = matching_approvals(uid, "group", gid)
         if not matched:
             add("PRV-001", "high", uid, group["name"],
@@ -172,7 +176,7 @@ def run_checks(data: dict[str, list[dict]], hashes: dict[str, str], as_of: dt.da
                 (f"membership:{gid}:{uid}",))
         else:
             earliest = min(matched, key=lambda a: a["approved_at"])
-            if parse_date(earliest["approved_at"], f"approval {earliest['request_id']}") > granted:
+            if granted is not None and parse_date(earliest["approved_at"], f"approval {earliest['request_id']}") > granted:
                 add("PRV-002", "high", uid, group["name"],
                     "Approval was recorded after privileged access was granted",
                     f"Membership granted {membership['granted_at']}; approval recorded {earliest['approved_at']}.",

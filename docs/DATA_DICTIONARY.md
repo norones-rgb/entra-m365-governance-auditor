@@ -6,7 +6,7 @@ Each file must be UTF-8 CSV with a header. Column order may vary, but all requir
 |---|---|---|
 | `users.csv` | `user_id,display_name,user_type,enabled,job_role` | `user_type` is Member/Guest/External. `enabled` is true/false. |
 | `groups.csv` | `group_id,name,privileged,owner_id` | Privilege must be explicitly classified as true/false; blank owner allowed. |
-| `memberships.csv` | `group_id,user_id,granted_at` | One direct user-to-group membership per row. |
+| `memberships.csv` | `group_id,user_id,granted_at` | One direct user-to-group membership per row. `granted_at` may be blank when the source cannot supply historical grant time; PRV-002 is then skipped. |
 | `approvals.csv` | `request_id,user_id,resource_type,resource_id,status,approved_at,expires_at` | `resource_type` is `group` or `site`, `status=approved` is used. Blank `expires_at` = no expiry in source; consider local policy. |
 | `sites.csv` | `site_id,name,sensitivity,owner_id` | Sensitive categories are `restricted` and `confidential`; blank owner allowed. |
 | `site_permissions.csv` | `site_id,user_id,permission,granted_at` | Direct, flattened SharePoint user permission. |

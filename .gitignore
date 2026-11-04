@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+.env
+*.token
+reports/
+.DS_Store
+
+# Live tenant exports and audit evidence never belong in public source control
+exports/
+graph_exports/
+*.json.token
+*.msalcache
