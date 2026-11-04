@@ -29,4 +29,4 @@
 
 ## Future commercial boundary
 
-Keep the **public demo** synthetic and educational. If developed as a paid ISGIN consulting deliverable, host private connectors, customer configuration, client evidence, integration credentials, and production controls separately. Never mix customer access data into this portfolio repository.
+Keep the **public demo** synthetic and educational. If developed into a commercial offering, host private connectors, customer configuration, client evidence, integration credentials, and production controls separately. Never mix customer access data into this portfolio repository.
