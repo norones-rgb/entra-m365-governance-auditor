@@ -4,7 +4,7 @@
 
 [![Tests](https://github.com/norones-rgb/entra-m365-governance-auditor/actions/workflows/tests.yml/badge.svg)](https://github.com/norones-rgb/entra-m365-governance-auditor/actions/workflows/tests.yml) · **Python 3.11+** · Dependency-free offline engine · Optional MSAL for Graph · Synthetic dataset included
 
-> **Version 0.3 (feature branch):** The offline synthetic auditor is unchanged. Optional read-only collectors can inspect **explicitly selected** Entra groups, selected access-review definitions through Graph, and a single SharePoint site through PnP PowerShell. Live tenants have **not** been used to test the new collectors. None of these source views establishes effective access or compliance; no real tenant data is committed.
+> **Version 0.4 (feature branch):** Adds offline, evidence-limited reconciliation of selected SharePoint principal exports with selected Entra group/user exports. The Graph exporter now includes optional UPN/mail alias records for exact identity matching. All new matching and reports are tested with synthetic data only. No real tenant has been tested, and no real identities are committed.
 
 ## Why this exists
 
@@ -19,6 +19,7 @@ Enterprise identity governance is more than granting access. Teams need to estab
 - **Governance campaigns:** Identify overdue user-access-review and job-role-review campaigns.
 - **IGA + SIEM-style evidence:** Match synthetic approval and membership-change events by request ID, user, and resource; separately report gaps where a matching event pair is absent.
 - **Exceptions and auditability:** Apply time-limited, approved exceptions without deleting findings. Produce JSON, CSV, HTML, correlation evidence, source-file hashes, and output checksums.
+- **SharePoint/Entra identity reconciliation (v0.4):** Match selected root/site principal observations to selected directory IDs and user aliases; report ambiguity, coverage gaps and disabled-account review indicators, without claiming effective permissions.
 
 ## Quick start (Windows PowerShell, macOS, Linux)
 
@@ -74,6 +75,22 @@ For site collection administrators, SharePoint group rosters, and root-web role 
 
 Read [Access review documentation](docs/ACCESS_REVIEW_EXPORT.md) and [SharePoint inventory documentation](docs/SHAREPOINT_EXPORT.md) before connecting to a real environment. Only the offline synthetic demos are suitable for the public repository.
 
+## Offline SharePoint / Entra reconciliation (v0.4)
+
+The new `reconcile-sharepoint` command correlates **two previously exported local snapshots**; it does not authenticate to either service. An entirely fictional demo is included:
+
+```bash
+python run_reconciliation_demo.py
+```
+
+View `reports/reconciliation-demo/dashboard.html`. Or run the command on **authorized** local exports:
+
+```bash
+python -m governance_auditor reconcile-sharepoint --graph exports/selected-directory --sharepoint exports/selected-site --output reports/reconciled
+```
+
+Exact object IDs, UPNs and mail aliases are used; display names and fuzzy matching are never used. Ambiguous/missing identities remain explicitly unresolved. A disabled-account review indicator is **not proof of effective access**. Never commit real exports or reports. Read [Reconciliation documentation](docs/RECONCILIATION.md).
+
 ## Controls
 
 | ID | Severity | Check |
@@ -100,7 +117,7 @@ The dataset includes invented identities, privileged groups, knowledge-library-s
 python -m unittest discover -s tests -v
 ```
 
-CI runs the offline engine, mocked Graph/review integration tests, and synthetic scenarios through GitHub Actions on push and pull request. No tenant credentials are needed. The PnP script has only static safety checks in CI and still requires live integration testing.
+CI runs the offline engine, mocked Graph/review integration tests, the synthetic reconciliation tests, and reproducible demos through GitHub Actions on push and pull request. No tenant credentials are needed. The PnP script has only static safety checks in CI and still requires live integration testing.
 
 ## Repository map
 
@@ -109,6 +126,7 @@ CI runs the offline engine, mocked Graph/review integration tests, and synthetic
 │   ├── __main__.py      # CLI
 │   ├── graph_export.py  # Selected Entra group inventory
 │   ├── review_export.py # Selected Graph review status and decision counts
+│   ├── reconcile.py     # Offline SharePoint/Entra identifier reconciliation
 │   ├── engine.py        # Snapshot validator and rule engine
 │   └── reporting.py     # Offline HTML, JSON, CSV, checksums
 ├── examples/synthetic/  # Invented, reproducible sample records
@@ -116,6 +134,9 @@ CI runs the offline engine, mocked Graph/review integration tests, and synthetic
 ├── assets/dashboard-preview.png
 ├── sharepoint/Export-SitePermissions.ps1 # Optional PnP site inventory (live unverified)
 ├── run_review_demo.py # Offline, fabricated review demo
+├── run_reconciliation_demo.py # Offline, fabricated principal-matching demo
+├── examples/reconciliation_synthetic/ # Synthetic export pair
+├── examples/reconciliation_demo_output/ # Reproducible report
 ├── requirements-graph.txt  # Optional MSAL auth dependency
 ├── tests/               # Regression, safety and validation tests
 ├── docs/
@@ -127,6 +148,7 @@ CI runs the offline engine, mocked Graph/review integration tests, and synthetic
 │   ├── GRAPH_EXPORT.md
 │   ├── ACCESS_REVIEW_EXPORT.md
 │   ├── SHAREPOINT_EXPORT.md
+│   ├── RECONCILIATION.md
 │   └── ROADMAP.md
 └── .github/workflows/tests.yml
 ```
@@ -135,7 +157,7 @@ CI runs the offline engine, mocked Graph/review integration tests, and synthetic
 
 - Entra Graph group export supports **selected groups and direct user memberships only**. The separate review exporter summarizes **selected** campaigns. The PnP script inventories one selected site root and is not live-tenant validated.
 - No Conditional Access, PIM policy configuration, Intune, endpoint compliance, or tenant security hardening checks.
-- No transitive/nested group resolution, dynamic group expansion, SharePoint list/item inheritance traversal, or effective-permissions calculation. Review decisions are reported as counts, not independently validated approval evidence.
+- No transitive/nested group resolution, dynamic group expansion, SharePoint list/item inheritance traversal, or effective-permissions calculation. Cross-source matching is limited to selected objects and strict identifiers. Review decisions are reported as counts, not independently validated approval evidence.
 - No certification of regulatory compliance, automatic revocation, or auto-remediation.
 - No guarantee of completeness if source systems have inconsistent IDs, missing activity, retention gaps, or inaccurate exported owners.
 

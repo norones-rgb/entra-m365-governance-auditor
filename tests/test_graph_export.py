@@ -27,9 +27,9 @@ def fake_api():
         f"/groups/{G1}/members": {"value": [{"id": U1, "@odata.type": "#microsoft.graph.user"}],
                                    "@odata.nextLink": f"https://graph.microsoft.com/v1.0/groups/{G1}/members?$skiptoken=next"},
         f"/groups/{G1}/members?$skiptoken=next": {"value": [{"id": DEVICE, "@odata.type": "#microsoft.graph.device"}]},
-        f"/users/{U1}?$select=id,displayName,userType,accountEnabled,jobTitle": {
+        f"/users/{U1}?$select=id,displayName,userType,accountEnabled,jobTitle,userPrincipalName,mail": {
             "id": U1, "displayName": "Demo Operator", "userType": "Member", "accountEnabled": False,
-            "jobTitle": "Support Engineer"},
+            "jobTitle": "Support Engineer", "userPrincipalName": "demo.operator@example.test", "mail": "demo.operator@example.test"},
     }
 
 
@@ -53,6 +53,10 @@ class GraphTests(unittest.TestCase):
             with (dest / "users.csv").open(newline="", encoding="utf8") as handle:
                 self.assertEqual(list(csv.DictReader(handle))[0]["enabled"], "false")
             self.assertTrue((dest / "non_user_members.csv").is_file())
+            with (dest / "identity_aliases.csv").open(newline="", encoding="utf-8") as handle:
+                identity_aliases = list(csv.DictReader(handle))
+            self.assertEqual(len(identity_aliases), 2)
+            self.assertEqual(identity_aliases[0]["alias_type"], "upn")
             self.assertFalse((dest / "approvals.csv").exists())
             self.assertTrue(any("skiptoken=next" in url for url in calls))
             with self.assertRaisesRegex(GraphExportError, "already exists"):
@@ -83,7 +87,7 @@ class GraphTests(unittest.TestCase):
 
     def test_incomplete_user_status_does_not_write_partial_output(self):
         fixtures = fake_api()
-        del fixtures[f"/users/{U1}?$select=id,displayName,userType,accountEnabled,jobTitle"]["accountEnabled"]
+        del fixtures[f"/users/{U1}?$select=id,displayName,userType,accountEnabled,jobTitle,userPrincipalName,mail"]["accountEnabled"]
         client = GraphClient("token", lambda url, _t: fixtures[url.removeprefix("https://graph.microsoft.com/v1.0")])
         with tempfile.TemporaryDirectory() as temp:
             dest = Path(temp) / "export"

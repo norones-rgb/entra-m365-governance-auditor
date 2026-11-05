@@ -16,3 +16,7 @@ Perform an explicit data privacy review, threat model, group-membership effectiv
 ## v0.3 clarification
 
 Never conflate selected review **decision counts** with independently verified approval evidence. The SharePoint group/site-admin/root-web inventory does not resolve effective permissions or item-level inheritance. Exported directories are Git-ignored, but public issue attachments, screenshots, and CI logs also require caution. No real tenant validation is claimed for the new collectors.
+
+## Cross-source reconciliation outputs (v0.4)
+
+Offline reconciliation can include source principal emails, login names and directory object IDs. These are sensitive, so never commit real reports or export snapshots, share them publicly or place them in CI artifacts. The source modules do not make Graph/SharePoint mutations. The matching is limited to strict identifiers and never guesses ambiguous identities or claims effective permissions. See [RECONCILIATION](RECONCILIATION.md).

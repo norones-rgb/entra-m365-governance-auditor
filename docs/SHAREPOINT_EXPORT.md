@@ -45,3 +45,7 @@ Exports contain personally identifiable information and potentially sensitive ac
 - [Get-PnPWeb](https://pnp.github.io/powershell/cmdlets/Get-PnPWeb.html)
 - [Get-PnPProperty](https://pnp.github.io/powershell/cmdlets/Get-PnPProperty.html)
 - [Connect-PnPOnline](https://pnp.github.io/powershell/cmdlets/Connect-PnPOnline.html)
+
+## Identity correlation (v0.4)
+
+A separate, offline correlation command can now compare these PnP principal rows against a selected Entra Graph snapshot, provided both exports were authorized and retained locally. Only strict identifiers and user aliases are matched; SharePoint-local groups, nested membership, effective permissions, and approval validity remain unknown. Read [RECONCILIATION](RECONCILIATION.md) before use.

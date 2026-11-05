@@ -27,6 +27,7 @@ Use a fresh output directory for each run. The program displays the Microsoft si
 | `groups.csv` | Explicitly selected groups, human-readable name, explicit privilege classification, first returned owner identifier |
 | `memberships.csv` | **Direct user-to-group edges only**, with `granted_at` left **blank** because the API doesn't provide the historical grant timestamp |
 | `non_user_members.csv` | Device, group, service-principal, or unknown member IDs and types; explicitly **not evaluated** |
+| `identity_aliases.csv` | Selected users' available UPN and mail aliases for **offline exact-match reconciliation** (v0.4) |
 | `manifest.json` | UTC collection time, source and coverage limitations, record counts, owner counts, and missing evidence types |
 
 Successful outputs are created only after all selected groups are processed. Requests use HTTP **GET** exclusively. The program rejects pagination redirects to unapproved hosts and retries limited Graph throttling responses. Authentication and HTTP errors cause the export to stop.
@@ -47,3 +48,7 @@ Successful outputs are created only after all selected groups are processed. Req
 - [List group owners](https://learn.microsoft.com/en-us/graph/api/group-list-owners?view=graph-rest-1.0)
 - [Get user](https://learn.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0)
 - [MSAL Python token acquisition](https://learn.microsoft.com/en-us/entra/msal/python/getting-started/acquiring-tokens)
+
+## Offline reconciliation (v0.4)
+
+Selected user UPN and mail aliases now export into `identity_aliases.csv`; `users.csv` retains its original schema. These aliases are sensitive and may be absent or nonunique. They can be used in the optional offline SharePoint reconciliation command, which reports unresolved/ambiguous matches instead of guessing. See [RECONCILIATION](RECONCILIATION.md).

@@ -1,0 +1,7 @@
+{
+  "schema": "graph-partial-v0.2",
+  "source": "synthetic read-only Graph example",
+  "collected_at_utc": "2026-11-04T14:00:00+00:00",
+  "group_ids": ["55555555-5555-4555-8555-555555555555"],
+  "coverage": "Selected group only; fabricated identities and email-shaped aliases"
+}

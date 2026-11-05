@@ -28,7 +28,22 @@ def main(argv: list[str] | None = None) -> int:
     reviews.add_argument("--definition-id", action="append", required=True, help="Review definition GUID (repeatable)")
     reviews.add_argument("--output", type=Path, required=True, help="Fresh local output directory, ideally under reports/")
     reviews.add_argument("--as-of", help="UTC evaluation ISO timestamp (defaults to now)")
+    recon = sub.add_parser("reconcile-sharepoint", help="Offline Entra/SharePoint principal reconciliation with explicit source coverage")
+    recon.add_argument("--graph", type=Path, required=True, help="Selected-group Graph export directory")
+    recon.add_argument("--sharepoint", type=Path, required=True, help="Selected-site PnP export directory")
+    recon.add_argument("--output", type=Path, required=True, help="Fresh local report directory")
     args = parser.parse_args(argv)
+    if args.command == "reconcile-sharepoint":
+        from .reconcile import ReconcileError, reconcile
+        try:
+            summary = reconcile(args.graph, args.sharepoint, args.output)
+        except (OSError, ValueError, csv.Error, ReconcileError) as exc:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            return 2
+        print(f"SharePoint observations: {summary['observation_count']} | Resolved: {summary['resolution_counts']['matched']} | "
+              f"Disabled-user review indicators: {summary['disabled_account_review_indicators']}")
+        print("Partial identity correlation only; not effective permissions or approval evidence.")
+        return 0
     if args.command == "review-export":
         from .graph_export import GraphClient, GraphExportError, acquire_delegated_token, valid_guid
         from .review_export import REVIEW_SCOPES, export_reviews, _parse_date_time
