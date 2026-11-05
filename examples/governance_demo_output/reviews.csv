@@ -1,0 +1,10 @@
+change_id,disposition,reviewer,reviewed_at_utc,rationale,action_owner,action_due_utc,action_status,closure_evidence,exception_approved_by,exception_expires_utc
+CHG-6B84F99160840AA0,acknowledged,reviewer_alpha,2026-11-04T15:00:00Z,Status change reviewed; investigation scoped separately.,,,,,,
+CHG-5B4D20F31ADE7B24,investigate,reviewer_beta,2026-11-04T15:02:00Z,Unexpected service principal membership requires validation.,identity_ops,2026-11-12T00:00:00Z,open,,,
+CHG-1FC2257BC298053B,remediate,reviewer_beta,2026-11-04T15:05:00Z,Confirm removal evidence in authoritative directory.,identity_ops,2026-11-06T00:00:00Z,in_progress,,,
+CHG-217825AE5897C001,exception,reviewer_alpha,2026-11-04T15:10:00Z,"Time-limited, externally documented review exception.",,,,,risk_approver,2026-12-01T00:00:00Z
+CHG-D77DA18A62795BB1,acknowledged,reviewer_beta,2026-11-04T15:15:00Z,Change corresponds to a documented inventory adjustment.,,,,,,
+CHG-D1065934DCA4F071,pending,,,,,,,,,
+CHG-76A9AD6F8BEF5454,pending,,,,,,,,,
+CHG-53026AB525D164B1,pending,,,,,,,,,
+CHG-1188812BF653C907,pending,,,,,,,,,

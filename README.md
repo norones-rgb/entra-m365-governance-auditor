@@ -4,7 +4,7 @@
 
 [![Tests](https://github.com/norones-rgb/entra-m365-governance-auditor/actions/workflows/tests.yml/badge.svg)](https://github.com/norones-rgb/entra-m365-governance-auditor/actions/workflows/tests.yml) · **Python 3.11+** · Dependency-free offline engine · Optional MSAL for Graph · Synthetic dataset included
 
-> **Version 0.5 (proposed):** Adds offline, coverage-aware comparison of two selected Entra group exports and, optionally, two selected-site SharePoint inventories. It reports observed additions, removals and user-status changes **only inside comparable scopes**. All demonstrations use fictional records; no real tenant has been tested.
+> **Version 0.6:** Adds an offline, evidence-anchored analyst review workflow for v0.5 observed changes, with documented dispositions, remediation owners, time-limited exceptions, and reproducible audit packages. All demonstrations use fictional records; no real tenant has been tested.
 
 ## Why this exists
 
@@ -113,6 +113,26 @@ python -m governance_auditor compare-snapshots \
 
 Graph-only comparisons are supported by omitting both SharePoint flags. Outputs include `changes.csv`, `coverage.csv`, `dashboard.html` and `manifest.json` with source checksums. **Changes are direct observations, not proof of approved grants, access revocations or effective SharePoint permissions.** Differing selected groups or site URLs are reported as coverage warnings, not access events. Read [Change detection, coverage rules and limitations](docs/CHANGE_DETECTION.md).
 
+## Offline Governance Review & Evidence (v0.6)
+
+Take the change observations from v0.5 through an analyst-reviewed, documented workflow without making access changes. Review rows are pinned to a specific comparison using source checksums and stable change IDs.
+
+```bash
+python run_governance_demo.py
+```
+
+Open `reports/governance-demo/package/dashboard.html` or see the committed [fictional example](examples/governance_demo_output/dashboard.html).
+
+To prepare your own offline review sheet and package:
+
+```bash
+python -m governance_auditor review-init --comparison reports/manual-changes --output reports/review-plan
+# Edit reports/review-plan/reviews.csv; keep source.json and change_id values unchanged.
+python -m governance_auditor review-package --comparison reports/manual-changes --plan reports/review-plan --output reports/review-evidence --as-of 2026-11-05T12:00:00Z
+```
+
+The tool tracks recorded dispositions, action owners/due dates, overdue actions, expired exceptions, and review evidence references. **These are human-entered assertions, not cryptographically signed approvals or independent proof that access was changed.** Open questions and comparison coverage warnings remain visible. See [governance review setup and limitations](docs/GOVERNANCE_REVIEW.md).
+
 ## Controls
 
 | ID | Severity | Check |
@@ -150,6 +170,7 @@ CI runs the offline engine, mocked Graph/review integration tests, the synthetic
 │   ├── review_export.py # Selected Graph review status and decision counts
 │   ├── reconcile.py     # Offline SharePoint/Entra identifier reconciliation
 │   ├── snapshot_diff.py # Offline coverage-aware snapshot comparisons
+│   ├── governance_review.py # Anchored review decisions and evidence packages
 │   ├── engine.py        # Snapshot validator and rule engine
 │   └── reporting.py     # Offline HTML, JSON, CSV, checksums
 ├── examples/synthetic/  # Invented, reproducible sample records
@@ -158,6 +179,7 @@ CI runs the offline engine, mocked Graph/review integration tests, the synthetic
 ├── sharepoint/Export-SitePermissions.ps1 # Optional PnP site inventory (live unverified)
 ├── run_review_demo.py # Offline, fabricated review demo
 ├── run_reconciliation_demo.py # Offline, fabricated principal-matching demo
+├── run_governance_demo.py # Offline, fabricated reviewer workflow
 ├── examples/reconciliation_synthetic/ # Synthetic export pair
 ├── examples/reconciliation_demo_output/ # Reproducible report
 ├── requirements-graph.txt  # Optional MSAL auth dependency
@@ -171,6 +193,7 @@ CI runs the offline engine, mocked Graph/review integration tests, the synthetic
 │   ├── GRAPH_EXPORT.md
 │   ├── ACCESS_REVIEW_EXPORT.md
 │   ├── SHAREPOINT_EXPORT.md
+│   ├── GOVERNANCE_REVIEW.md
 │   ├── RECONCILIATION.md
 │   └── ROADMAP.md
 └── .github/workflows/tests.yml

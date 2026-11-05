@@ -1,0 +1,14 @@
+{
+  "schema": "offline-review-plan-v0.6",
+  "source_schema": "selected-access-change-v0.5",
+  "source_sha256": {
+    "changes.csv": "61573cc3bb2334c86cc0b726fdeb574b5d8723dcd2a24167ad34773694d7cde2",
+    "coverage.csv": "754a19a2d75835a8fd98934cad637bf4c2792f4301ebc2ae957caae38d836a1a",
+    "manifest.json": "116e4140b1fa8cde32b56c9f8aabe1a09b837749c0f6d8c711378b7599966085"
+  },
+  "changes": 9,
+  "limitations": [
+    "Editing a CSV is not an authenticated approval",
+    "No access changes occur"
+  ]
+}

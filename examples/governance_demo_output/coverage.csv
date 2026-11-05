@@ -1,0 +1,5 @@
+system,scope,before,after,comparable,note
+Entra,55555555-5555-4555-8555-555555555555,selected,selected,yes,Direct membership can be compared
+Entra,66666666-6666-4666-8666-666666666666,not selected,selected,no,Changed selection; do not infer access grant/removal
+Entra,selected users,2,3,partial,Users are only enumerated through selected direct group memberships
+SharePoint,https://demo.sharepoint.com/sites/example,https://demo.sharepoint.com/sites/example,https://demo.sharepoint.com/sites/example,yes,Root-site observation only

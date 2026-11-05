@@ -20,3 +20,5 @@ jobs:
         run: python run_reconciliation_demo.py
       - name: Run offline synthetic access change comparison
         run: python run_change_demo.py
+      - name: Run offline governance review demonstration
+        run: python run_governance_demo.py
