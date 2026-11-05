@@ -1,0 +1,36 @@
+{
+  "schema": "offline-review-evidence-v0.6",
+  "mode": "offline",
+  "no_network": true,
+  "as_of_utc": "2026-11-05T12:00:00+00:00",
+  "changes": 9,
+  "tracked_actions": 2,
+  "review_flags": {
+    "reviewed_self_reported": 2,
+    "action_open": 2,
+    "exception_self_reported": 1,
+    "awaiting_review": 4
+  },
+  "coverage_warnings": 2,
+  "source_comparison_sha256": {
+    "changes.csv": "61573cc3bb2334c86cc0b726fdeb574b5d8723dcd2a24167ad34773694d7cde2",
+    "coverage.csv": "754a19a2d75835a8fd98934cad637bf4c2792f4301ebc2ae957caae38d836a1a",
+    "manifest.json": "116e4140b1fa8cde32b56c9f8aabe1a09b837749c0f6d8c711378b7599966085"
+  },
+  "plan_sha256": {
+    "source.json": "979c065cef8adbd5c9bf510846531a9658968cb4bd3d52341ba0b3729e219bc4",
+    "reviews.csv": "cf7452410f85115dfeb197390bfe9ffc30d1c8e92b4fa4dcff5c8b09901131f9"
+  },
+  "limitations": [
+    "Review and exception claims are self-reported, not verified electronic signatures",
+    "No external approval or remediation corroboration",
+    "Only previously compared selected-scope observations",
+    "No permission changes, API calls, or effective-access determination"
+  ],
+  "output_sha256": {
+    "coverage.csv": "754a19a2d75835a8fd98934cad637bf4c2792f4301ebc2ae957caae38d836a1a",
+    "dashboard.html": "fe4a970d2c1877accb5504bd760a3eca5c3f670d129aed160611c85e7e8aad98",
+    "remediation_actions.csv": "6b7f1118812baf80c1a027b8f5cab9f17bb0c0cccd2aa2769e516728a091dce5",
+    "reviewed_changes.csv": "cb146a16bde471db1cb208c223fb0756ad4d0e628c94a7d3d351ec64c7ac19ea"
+  }
+}

@@ -38,7 +38,29 @@ def main(argv: list[str] | None = None) -> int:
     drift.add_argument("--before-sharepoint", type=Path, help="Optional earlier selected-site PnP export")
     drift.add_argument("--after-sharepoint", type=Path, help="Optional later selected-site PnP export")
     drift.add_argument("--output", type=Path, required=True, help="New local comparison report directory")
+    init = sub.add_parser("review-init", help="Create an anchored, editable offline change-review sheet")
+    init.add_argument("--comparison", type=Path, required=True, help="v0.5 comparison report directory")
+    init.add_argument("--output", type=Path, required=True, help="Fresh review plan directory")
+    pack = sub.add_parser("review-package", help="Validate review decisions and export local audit evidence")
+    pack.add_argument("--comparison", type=Path, required=True, help="Original v0.5 comparison report directory")
+    pack.add_argument("--plan", type=Path, required=True, help="Anchored review plan directory, with edited reviews.csv")
+    pack.add_argument("--output", type=Path, required=True, help="Fresh output evidence directory")
+    pack.add_argument("--as-of", required=True, help="Timezone-aware UTC snapshot datetime, e.g. 2026-11-05T12:00:00Z")
     args = parser.parse_args(argv)
+    if args.command in ("review-init", "review-package"):
+        from .governance_review import ReviewError, initialize_review, export_review_package, _utc
+        try:
+            if args.command == "review-init":
+                result = initialize_review(args.comparison, args.output)
+                print(f"Prepared {result['changes']} anchored review rows: {args.output / 'reviews.csv'}")
+            else:
+                as_of = _utc(args.as_of, "--as-of")
+                result = export_review_package(args.comparison, args.plan, args.output, as_of)
+                print(f"Packaged {result['changes']} reviews and {result['tracked_actions']} tracked actions: {args.output}")
+        except (OSError, ValueError, csv.Error, ReviewError) as exc:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            return 2
+        return 0
     if args.command == "compare-snapshots":
         from .snapshot_diff import ComparisonError, compare_snapshots
         try:

@@ -24,3 +24,7 @@ Offline reconciliation can include source principal emails, login names and dire
 ## v0.5 comparison privacy and scope
 
 Change reports contain identifiers, security group memberships and site principal observations and must remain local/private. The generated dashboard HTML escapes source text; CSV output neutralizes common spreadsheet formula prefixes. The comparator reads only explicit local source directories; it makes no network calls or tenant mutations and rejects existing output paths to avoid overwriting evidence. Source hashes detect changed files but are not an attestation or guarantee of provenance. Changed collection scope suppresses access-change claims for non-overlapping resources. Keep real snapshot directories and generated reports outside GitHub.
+
+## Offline review data (v0.6)
+
+Reviewer identifiers, rationale, exception approval assertions and closure references may be sensitive. Treat review plans and packages as controlled local records. The tool cannot independently verify reviewer identity, approved exceptions, actual removal of access, or the completeness of submitted evidence. Source/output SHA-256 hashes are for consistency and provenance, **not** cryptographic attestation. Never commit real review files or exports to this public demonstration repository.

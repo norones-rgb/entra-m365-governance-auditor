@@ -45,12 +45,22 @@
 - [x] Output CSV, provenance-hashed JSON manifest and static HTML dashboard with a synthetic regression demo
 - [ ] Validation with explicitly authorized real historical snapshots (not included in public repository)
 
+## v0.6 — offline governance review and audit evidence
+
+- [x] Stable change IDs pinned to a specific source comparison with SHA-256 hashes
+- [x] Analyst disposition template (pending, acknowledged, investigate, remediate, exception)
+- [x] Remediation owner/due/status tracking and time-limited exception handling
+- [x] Action/exception validation and separate reporting without auto-remediation
+- [x] Offline HTML, CSV and manifest evidence bundle with source and output digests
+- [x] Synthetic scenario, CLI documentation and network-free regression tests
+- [ ] Verified reviewer identity, policy approvals or cryptographic evidence attestation (not provided by the offline prototype)
+
 ## Future — deeper assessment (not implemented)
 
 - [ ] Configurable controls, risk scoring and control ownership
 - [ ] Optional Maester security assessment integration (where access is authorized)
 - [ ] Conditional Access and PIM **read-only checks** with explicit limitations
-- [ ] Robust exception and evidence review workflow with approval trails
+- [x] Offline, self-reported exception and evidence review worksheet (v0.6; no authenticated approvals)
 - [x] Selected-source baseline comparisons across snapshots (v0.5; not attested evidence)
 - [ ] Attested evidence package and reviewer signoff flow
 
