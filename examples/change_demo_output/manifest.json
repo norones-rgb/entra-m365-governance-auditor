@@ -1,0 +1,84 @@
+{
+  "schema": "selected-access-change-v0.5",
+  "mode": "offline",
+  "no_network": true,
+  "before_graph_collected_at_utc": "2026-10-01T12:00:00+00:00",
+  "after_graph_collected_at_utc": "2026-11-01T12:00:00+00:00",
+  "sharepoint_included": true,
+  "changes": 9,
+  "change_counts": {
+    "changed": 1,
+    "added": 5,
+    "removed": 3
+  },
+  "non_comparable_scopes": 1,
+  "coverage": [
+    {
+      "system": "Entra",
+      "scope": "55555555-5555-4555-8555-555555555555",
+      "before": "selected",
+      "after": "selected",
+      "comparable": "yes",
+      "note": "Direct membership can be compared"
+    },
+    {
+      "system": "Entra",
+      "scope": "66666666-6666-4666-8666-666666666666",
+      "before": "not selected",
+      "after": "selected",
+      "comparable": "no",
+      "note": "Changed selection; do not infer access grant/removal"
+    },
+    {
+      "system": "Entra",
+      "scope": "selected users",
+      "before": "2",
+      "after": "3",
+      "comparable": "partial",
+      "note": "Users are only enumerated through selected direct group memberships"
+    },
+    {
+      "system": "SharePoint",
+      "scope": "https://demo.sharepoint.com/sites/example",
+      "before": "https://demo.sharepoint.com/sites/example",
+      "after": "https://demo.sharepoint.com/sites/example",
+      "comparable": "yes",
+      "note": "Root-site observation only"
+    }
+  ],
+  "source_sha256": {
+    "before_graph": {
+      "groups.csv": "cd7138e20c5647176206017a81799e523cb706a7b8aaa8c590a87c3e9ad9249e",
+      "manifest.json": "c92b30e6a1dc4ae86bd5d336ef3ff4d313f2b407ca3b5f55c34974dfa68e8d1f",
+      "memberships.csv": "6a0c2af1dd4ec3f05dd7150bf2a18f6705636878fc23315e7de45a0914f246c7",
+      "non_user_members.csv": "e11a942d722c1e80dc22c0e96cec0c8e6d1faea21264ca742aeaeeb378ea75f0",
+      "users.csv": "0c7862f5e46b9cfa8858a9ce825ebdd581474bd4dce30e5ec94e8fd993898f57"
+    },
+    "after_graph": {
+      "groups.csv": "551ac5b24e7601cfad15491f0457869e879d9daaa92faa321624b38dd542bb20",
+      "manifest.json": "3309fa5a87932d3be2b6ef076ae9c409f81fc737f58b277852533d1ec398b334",
+      "memberships.csv": "3836b1f19851c45ada132c135ac5a553a098574d38df8eba8c7092810dcd6655",
+      "non_user_members.csv": "258f77629d8f7764a03acd9158ba3373090b424931a61af2dd7dd89509d985e2",
+      "users.csv": "f8876e556878e8fc26a7d9f0f1cf3059c6310899e6b517c60bf5d1caab0c2620"
+    },
+    "before_sharepoint": {
+      "manifest.json": "f412858043af2d38b8645d0e1639612a6134403f3ad55cb76415beac92b9bb71",
+      "root_web_role_assignments.csv": "9ab72bac3e0287c4a187e52a3a5a69e2e08558ae7f7f9e820a364f522ddfb3a3",
+      "sharepoint_group_members.csv": "cdf1de1d85f125b3a0f399de36095ad7f0ced68a0273e7fbdfbb85a1896f1e21",
+      "site_collection_admins.csv": "890992b4ed02053153546783836704dc9d768bb1b88861a038ff95fb5e0b3a6c"
+    },
+    "after_sharepoint": {
+      "manifest.json": "57df72c57a5903556fca0ad28151538a286d342bffd42dc3d81890d9b96ee6b5",
+      "root_web_role_assignments.csv": "6f85d9d9e0ed7204a0ec134071bf5f3da1f9aec194fb24e44c15a00660156be6",
+      "sharepoint_group_members.csv": "493fe5bcc7b20d6eacdbacab50cf0cdd5eb7e66111950434d990dc9d3967f808",
+      "site_collection_admins.csv": "be15552e49a3228d00f8a0878f58215c294089df00fee5f2f89319a09e9f8aaf"
+    }
+  },
+  "limitations": [
+    "Only explicitly selected direct Entra group memberships and user status",
+    "Selected SharePoint site group rosters, admins and root-web role bindings only",
+    "No transitive/effective permissions, sharing links, list/item access, approval verification, access grant dates, or evidence of revocation",
+    "Scope differences suppress access-change comparisons for non-overlapping groups/sites",
+    "No live tenant connections or account modifications"
+  ]
+}

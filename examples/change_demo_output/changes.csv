@@ -1,0 +1,10 @@
+system,category,change,resource,principal,before,after,interpretation
+Entra,account_status,changed,selected user status,22222222-2222-4222-8222-222222222222,true,false,"Observed account status change in selected export, not an access review decision"
+Entra,direct_non_user_member,added,55555555-5555-4555-8555-555555555555,77777777-7777-4777-8777-777777777777,,#microsoft.graph.servicePrincipal,Non-user directory object observed; effective rights unknown
+Entra,direct_user_membership,removed,55555555-5555-4555-8555-555555555555,22222222-2222-4222-8222-222222222222,user,,"Observed direct user group membership, not proof of effective access"
+Entra,direct_user_membership,added,55555555-5555-4555-8555-555555555555,33333333-3333-4333-8333-333333333333,,user,"Observed direct user group membership, not proof of effective access"
+SharePoint,group_roster,removed,https://demo.sharepoint.com/sites/example / 3,i:0#.f|membership|blair@example.test,user,,SharePoint group roster observation only; not calculated effective access
+SharePoint,group_roster,added,https://demo.sharepoint.com/sites/example / 3,i:0#.f|membership|casey@example.test,,user,SharePoint group roster observation only; not calculated effective access
+SharePoint,root_web_role,added,https://demo.sharepoint.com/sites/example / edit,members,,sharepointgroup,Root-web role binding only; does not prove list/item effective access
+SharePoint,root_web_role,removed,https://demo.sharepoint.com/sites/example / read,members,sharepointgroup,,Root-web role binding only; does not prove list/item effective access
+SharePoint,site_collection_admin,added,https://demo.sharepoint.com/sites/example,backup@example.test,,user,Site collection administrator listing only

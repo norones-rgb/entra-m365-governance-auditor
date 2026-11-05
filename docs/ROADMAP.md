@@ -36,13 +36,23 @@
 - [x] HTML/CSV export and regression-tested synthetic demonstration
 - [ ] Live test against explicitly authorized Entra and SharePoint tenant
 
+## v0.5 — selected-scope access change detection
+
+- [x] Compare two chronological, locally exported selected-group Entra snapshots
+- [x] Identify direct membership changes, user status and group metadata differences only in common collection scope
+- [x] Compare matching selected-site SharePoint rosters, root-web role assignments and site collection administrators
+- [x] Flag changed source scope as non-comparable instead of inventing grants or removals
+- [x] Output CSV, provenance-hashed JSON manifest and static HTML dashboard with a synthetic regression demo
+- [ ] Validation with explicitly authorized real historical snapshots (not included in public repository)
+
 ## Future — deeper assessment (not implemented)
 
 - [ ] Configurable controls, risk scoring and control ownership
 - [ ] Optional Maester security assessment integration (where access is authorized)
 - [ ] Conditional Access and PIM **read-only checks** with explicit limitations
 - [ ] Robust exception and evidence review workflow with approval trails
-- [ ] Baseline comparisons across snapshots and attested evidence packages
+- [x] Selected-source baseline comparisons across snapshots (v0.5; not attested evidence)
+- [ ] Attested evidence package and reviewer signoff flow
 
 ## Future commercial boundary
 

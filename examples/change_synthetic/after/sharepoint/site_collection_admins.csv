@@ -1,0 +1,3 @@
+site_url,principal_login,principal_email,principal_type
+https://demo.sharepoint.com/sites/example,admin@example.test,admin@example.test,User
+https://demo.sharepoint.com/sites/example,backup@example.test,backup@example.test,User

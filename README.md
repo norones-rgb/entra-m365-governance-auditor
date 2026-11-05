@@ -4,7 +4,7 @@
 
 [![Tests](https://github.com/norones-rgb/entra-m365-governance-auditor/actions/workflows/tests.yml/badge.svg)](https://github.com/norones-rgb/entra-m365-governance-auditor/actions/workflows/tests.yml) · **Python 3.11+** · Dependency-free offline engine · Optional MSAL for Graph · Synthetic dataset included
 
-> **Version 0.4 (feature branch):** Adds offline, evidence-limited reconciliation of selected SharePoint principal exports with selected Entra group/user exports. The Graph exporter now includes optional UPN/mail alias records for exact identity matching. All new matching and reports are tested with synthetic data only. No real tenant has been tested, and no real identities are committed.
+> **Version 0.5 (proposed):** Adds offline, coverage-aware comparison of two selected Entra group exports and, optionally, two selected-site SharePoint inventories. It reports observed additions, removals and user-status changes **only inside comparable scopes**. All demonstrations use fictional records; no real tenant has been tested.
 
 ## Why this exists
 
@@ -20,6 +20,7 @@ Enterprise identity governance is more than granting access. Teams need to estab
 - **IGA + SIEM-style evidence:** Match synthetic approval and membership-change events by request ID, user, and resource; separately report gaps where a matching event pair is absent.
 - **Exceptions and auditability:** Apply time-limited, approved exceptions without deleting findings. Produce JSON, CSV, HTML, correlation evidence, source-file hashes, and output checksums.
 - **SharePoint/Entra identity reconciliation (v0.4):** Match selected root/site principal observations to selected directory IDs and user aliases; report ambiguity, coverage gaps and disabled-account review indicators, without claiming effective permissions.
+- **Snapshot change detection (v0.5):** Compare selected Entra group memberships and SharePoint site assignments over time while suppressing misleading changes caused by mismatched scope.
 
 ## Quick start (Windows PowerShell, macOS, Linux)
 
@@ -91,6 +92,27 @@ python -m governance_auditor reconcile-sharepoint --graph exports/selected-direc
 
 Exact object IDs, UPNs and mail aliases are used; display names and fuzzy matching are never used. Ambiguous/missing identities remain explicitly unresolved. A disabled-account review indicator is **not proof of effective access**. Never commit real exports or reports. Read [Reconciliation documentation](docs/RECONCILIATION.md).
 
+## Offline Entra / SharePoint change detection (v0.5)
+
+Compare earlier and later selected-source exports. The synthetic demo requires no packages or sign-in:
+
+```bash
+python run_change_demo.py
+```
+
+Open `reports/change-demo/dashboard.html` or inspect the pre-generated [fictional comparison dashboard](examples/change_demo_output/dashboard.html).
+
+```bash
+python -m governance_auditor compare-snapshots \
+  --before-graph examples/change_synthetic/before/graph \
+  --after-graph examples/change_synthetic/after/graph \
+  --before-sharepoint examples/change_synthetic/before/sharepoint \
+  --after-sharepoint examples/change_synthetic/after/sharepoint \
+  --output reports/manual-changes
+```
+
+Graph-only comparisons are supported by omitting both SharePoint flags. Outputs include `changes.csv`, `coverage.csv`, `dashboard.html` and `manifest.json` with source checksums. **Changes are direct observations, not proof of approved grants, access revocations or effective SharePoint permissions.** Differing selected groups or site URLs are reported as coverage warnings, not access events. Read [Change detection, coverage rules and limitations](docs/CHANGE_DETECTION.md).
+
 ## Controls
 
 | ID | Severity | Check |
@@ -127,6 +149,7 @@ CI runs the offline engine, mocked Graph/review integration tests, the synthetic
 │   ├── graph_export.py  # Selected Entra group inventory
 │   ├── review_export.py # Selected Graph review status and decision counts
 │   ├── reconcile.py     # Offline SharePoint/Entra identifier reconciliation
+│   ├── snapshot_diff.py # Offline coverage-aware snapshot comparisons
 │   ├── engine.py        # Snapshot validator and rule engine
 │   └── reporting.py     # Offline HTML, JSON, CSV, checksums
 ├── examples/synthetic/  # Invented, reproducible sample records

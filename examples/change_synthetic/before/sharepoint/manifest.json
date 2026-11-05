@@ -1,0 +1,7 @@
+{
+  "schema": "pnp-sharepoint-v0.3",
+  "source": "synthetic demonstration",
+  "collected_at_utc": "2026-10-01T12:00:00+00:00",
+  "site_url": "https://demo.sharepoint.com/sites/example",
+  "coverage": "selected site root-web only"
+}

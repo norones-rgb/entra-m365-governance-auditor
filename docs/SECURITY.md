@@ -20,3 +20,7 @@ Never conflate selected review **decision counts** with independently verified a
 ## Cross-source reconciliation outputs (v0.4)
 
 Offline reconciliation can include source principal emails, login names and directory object IDs. These are sensitive, so never commit real reports or export snapshots, share them publicly or place them in CI artifacts. The source modules do not make Graph/SharePoint mutations. The matching is limited to strict identifiers and never guesses ambiguous identities or claims effective permissions. See [RECONCILIATION](RECONCILIATION.md).
+
+## v0.5 comparison privacy and scope
+
+Change reports contain identifiers, security group memberships and site principal observations and must remain local/private. The generated dashboard HTML escapes source text; CSV output neutralizes common spreadsheet formula prefixes. The comparator reads only explicit local source directories; it makes no network calls or tenant mutations and rejects existing output paths to avoid overwriting evidence. Source hashes detect changed files but are not an attestation or guarantee of provenance. Changed collection scope suppresses access-change claims for non-overlapping resources. Keep real snapshot directories and generated reports outside GitHub.
