@@ -22,3 +22,5 @@ jobs:
         run: python run_change_demo.py
       - name: Run offline governance review demonstration
         run: python run_governance_demo.py
+      - name: Run offline governance scorecard demonstration
+        run: python run_scorecard_demo.py

@@ -46,7 +46,26 @@ def main(argv: list[str] | None = None) -> int:
     pack.add_argument("--plan", type=Path, required=True, help="Anchored review plan directory, with edited reviews.csv")
     pack.add_argument("--output", type=Path, required=True, help="Fresh output evidence directory")
     pack.add_argument("--as-of", required=True, help="Timezone-aware UTC snapshot datetime, e.g. 2026-11-05T12:00:00Z")
+    score = sub.add_parser("governance-scorecard", help="Offline process scorecard from a validated v0.6 evidence package")
+    score.add_argument("--package", type=Path, required=True, help="v0.6 evidence package directory")
+    score.add_argument("--output", type=Path, required=True, help="Fresh offline scorecard directory")
+    score.add_argument("--as-of", required=True, help="Timezone-aware evaluation date/time (ISO 8601)")
+    score.add_argument("--comparison", type=Path, help="Optional original v0.5 comparison for hash verification")
+    score.add_argument("--plan", type=Path, help="Optional original v0.6 review plan for hash verification")
     args = parser.parse_args(argv)
+    if args.command == "governance-scorecard":
+        from .governance_review import ReviewError, _utc
+        from .scorecard import create_scorecard
+        try:
+            as_of = _utc(args.as_of, "--as-of")
+            result = create_scorecard(args.package, args.output, as_of, args.comparison, args.plan)
+        except (OSError, ValueError, csv.Error, ReviewError) as exc:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            return 2
+        print(f"Reviews pending: {result['counts']['pending_reviews']} | Open actions overdue: "
+              f"{result['counts']['overdue_actions']} | Readiness: {result['readiness']}")
+        print("Offline workflow metrics only; not a security, compliance, or authenticated approval rating.")
+        return 0
     if args.command in ("review-init", "review-package"):
         from .governance_review import ReviewError, initialize_review, export_review_package, _utc
         try:

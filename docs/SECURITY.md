@@ -28,3 +28,7 @@ Change reports contain identifiers, security group memberships and site principa
 ## Offline review data (v0.6)
 
 Reviewer identifiers, rationale, exception approval assertions and closure references may be sensitive. Treat review plans and packages as controlled local records. The tool cannot independently verify reviewer identity, approved exceptions, actual removal of access, or the completeness of submitted evidence. Source/output SHA-256 hashes are for consistency and provenance, **not** cryptographic attestation. Never commit real review files or exports to this public demonstration repository.
+
+## v0.7 scorecard trust boundary
+
+The scorecard reads locally collected records and does not authenticate reviewer identities, approve exceptions, validate external closure references, or contact Microsoft services. SHA-256 checks verify local file consistency, not independent authenticity; optional original-source checks are explicitly marked as either matched or not supplied. Metrics exclude uncollected sources and cannot be interpreted as tenant-wide completeness. The public demonstration uses fabricated names and IDs. Treat any real review/scorecard outputs and action-owner identifiers as sensitive local audit data.
