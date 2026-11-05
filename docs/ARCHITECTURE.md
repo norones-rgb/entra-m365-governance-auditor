@@ -67,3 +67,7 @@ Read-only export adapters should remain **optional**, run with explicitly grante
 ## v0.6 offline review layer
 
 `governance_review.py` consumes a v0.5 comparison and generates an anchored CSV review worksheet. The analyst supplies explicitly labeled dispositions and action references. The exporter validates every change ID, review field and original source hash, then emits an offline HTML/CSV evidence package and manifest with SHA-256 digests. The source review fields are **self-reported** and do not represent authenticated approval or independently attested access remediation. Coverage changes are not promoted into access events. See [GOVERNANCE_REVIEW.md](GOVERNANCE_REVIEW.md).
+
+## v0.7 offline scorecard
+
+`governance_auditor.scorecard` consumes the v0.6 evidence package *after* checking its recorded file digests and internal disposition/action consistency. It optionally verifies the original comparison and review plan when supplied. A requested UTC date recomputes overdue actions and exception expiry, and returns separate workflow metrics and source comparability instead of producing a general security or compliance score. The output contains `scorecard.json`, metric/action CSVs, a static HTML dashboard and a checksum manifest. Nothing is written back to the source package. See [SCORECARD.md](SCORECARD.md).

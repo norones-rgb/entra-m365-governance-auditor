@@ -55,6 +55,16 @@
 - [x] Synthetic scenario, CLI documentation and network-free regression tests
 - [ ] Verified reviewer identity, policy approvals or cryptographic evidence attestation (not provided by the offline prototype)
 
+## v0.7 — selected-scope workflow scorecard
+
+- [x] Validate v0.6 evidence package digests and internal review/action consistency before scoring
+- [x] Summarize documented reviews, open action timeliness, recorded exception currency and comparable selected source scopes
+- [x] Re-evaluate overdue and expired indicators against an explicit timezone-aware date
+- [x] Optional hash checks against original v0.5 comparison and v0.6 review plan
+- [x] N/A denominators, separate metrics, no composite enterprise security or compliance grade
+- [x] Static offline HTML, CSV and JSON reports with output checksums and synthetic demo
+- [ ] Authenticated approvals, independently verified closure, signed evidence and formal control ownership
+
 ## Future — deeper assessment (not implemented)
 
 - [ ] Configurable controls, risk scoring and control ownership

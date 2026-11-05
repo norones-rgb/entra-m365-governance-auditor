@@ -1,0 +1,23 @@
+{
+  "schema": "offline-governance-scorecard-v0.7",
+  "no_network": true,
+  "as_of_utc": "2026-11-15T12:00:00+00:00",
+  "source_package_manifest_sha256": "1a549cb907c60f1f05a90854820637bb30610fc3fccd56371251964ae39551e2",
+  "source_package_sha256": {
+    "coverage.csv": "754a19a2d75835a8fd98934cad637bf4c2792f4301ebc2ae957caae38d836a1a",
+    "dashboard.html": "fe4a970d2c1877accb5504bd760a3eca5c3f670d129aed160611c85e7e8aad98",
+    "remediation_actions.csv": "6b7f1118812baf80c1a027b8f5cab9f17bb0c0cccd2aa2769e516728a091dce5",
+    "reviewed_changes.csv": "cb146a16bde471db1cb208c223fb0756ad4d0e628c94a7d3d351ec64c7ac19ea"
+  },
+  "source_checks": {
+    "comparison": "not_supplied",
+    "review_plan": "not_supplied"
+  },
+  "output_sha256": {
+    "action_queue.csv": "4d89b4bf4071fa4635290f83e1c63d3115ec14de7ca352051b3d65b18dd8d0db",
+    "dashboard.html": "360364a830d7c08f5a9487590a18d5a86a5e6673683cab958287930d6cf4edf7",
+    "scorecard.csv": "75800b6be64e37f400288924467e35c940ca303b94ca94060f09a8cd7f618143",
+    "scorecard.json": "de402d4151abcd1adc52a7b4cc799395de02d058da0adf3df3b33c2caa7afe95"
+  },
+  "note": "Hashes are reproducibility checks, not signatures or independent verification"
+}

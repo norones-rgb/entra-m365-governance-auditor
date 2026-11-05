@@ -4,7 +4,7 @@
 
 [![Tests](https://github.com/norones-rgb/entra-m365-governance-auditor/actions/workflows/tests.yml/badge.svg)](https://github.com/norones-rgb/entra-m365-governance-auditor/actions/workflows/tests.yml) · **Python 3.11+** · Dependency-free offline engine · Optional MSAL for Graph · Synthetic dataset included
 
-> **Version 0.6:** Adds an offline, evidence-anchored analyst review workflow for v0.5 observed changes, with documented dispositions, remediation owners, time-limited exceptions, and reproducible audit packages. All demonstrations use fictional records; no real tenant has been tested.
+> **Version 0.7:** Adds an offline governance **workflow scorecard** over validated v0.6 evidence packages, with transparent review, action-due, exception and selected-scope indicators. This is not a security or compliance grade. All demonstrations use fictional records; no real tenant has been tested.
 
 ## Why this exists
 
@@ -161,6 +161,25 @@ python -m unittest discover -s tests -v
 
 CI runs the offline engine, mocked Graph/review integration tests, the synthetic reconciliation tests, and reproducible demos through GitHub Actions on push and pull request. No tenant credentials are needed. The PnP script has only static safety checks in CI and still requires live integration testing.
 
+## Offline governance scorecard (v0.7)
+
+Use a previously generated v0.6 evidence package to summarize documented reviews, overdue actions, exception currency and **selected-scope** comparability. The report never connects to a tenant or changes any access:
+
+```bash
+python run_scorecard_demo.py
+```
+
+Open `reports/scorecard-demo/dashboard.html` or the committed [synthetic example scorecard](examples/scorecard_demo_output/dashboard.html). For a fresh local report:
+
+```bash
+python -m governance_auditor governance-scorecard \
+  --package examples/governance_demo_output \
+  --output reports/my-scorecard \
+  --as-of 2026-11-15T12:00:00Z
+```
+
+Optional `--comparison` and `--plan` parameters verify original source file hashes, where available. Missing original sources are explicitly marked **not supplied**, not "verified." The tool reports separate numerator/denominator metrics and N/A when a denominator is zero; it intentionally **does not calculate an overall security score**. The original v0.6 decision records remain self-reported, not authenticated approval evidence. See [Scorecard metrics and limitations](docs/SCORECARD.md).
+
 ## Repository map
 
 ```text
@@ -171,6 +190,7 @@ CI runs the offline engine, mocked Graph/review integration tests, the synthetic
 │   ├── reconcile.py     # Offline SharePoint/Entra identifier reconciliation
 │   ├── snapshot_diff.py # Offline coverage-aware snapshot comparisons
 │   ├── governance_review.py # Anchored review decisions and evidence packages
+│   ├── scorecard.py         # Offline review workflow scorecard
 │   ├── engine.py        # Snapshot validator and rule engine
 │   └── reporting.py     # Offline HTML, JSON, CSV, checksums
 ├── examples/synthetic/  # Invented, reproducible sample records
@@ -180,6 +200,7 @@ CI runs the offline engine, mocked Graph/review integration tests, the synthetic
 ├── run_review_demo.py # Offline, fabricated review demo
 ├── run_reconciliation_demo.py # Offline, fabricated principal-matching demo
 ├── run_governance_demo.py # Offline, fabricated reviewer workflow
+├── run_scorecard_demo.py # Offline, fabricated governance scorecard
 ├── examples/reconciliation_synthetic/ # Synthetic export pair
 ├── examples/reconciliation_demo_output/ # Reproducible report
 ├── requirements-graph.txt  # Optional MSAL auth dependency
@@ -193,6 +214,7 @@ CI runs the offline engine, mocked Graph/review integration tests, the synthetic
 │   ├── GRAPH_EXPORT.md
 │   ├── ACCESS_REVIEW_EXPORT.md
 │   ├── SHAREPOINT_EXPORT.md
+│   ├── SCORECARD.md
 │   ├── GOVERNANCE_REVIEW.md
 │   ├── RECONCILIATION.md
 │   └── ROADMAP.md

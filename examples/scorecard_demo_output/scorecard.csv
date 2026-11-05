@@ -1,0 +1,6 @@
+metric,label,numerator,denominator,percent,meaning
+documented_review_rate,Reviews documented,5,9,55.6,Self-reported dispositions present; not independently authenticated
+open_action_timeliness,Open actions within due date,0,2,0.0,Open actions only; closed actions are self-reported and excluded
+exception_currency,Exceptions not expired,1,1,100.0,"Exception approvals are recorded claims, not verified authority"
+comparable_collection_scope,Comparable selected scopes,2,4,50.0,"Comparison coverage among exported selections, not tenant-wide coverage"
+closed_action_reference,Closed actions with references,0,0,N/A,References are self-reported; their content and validity are not independently verified
