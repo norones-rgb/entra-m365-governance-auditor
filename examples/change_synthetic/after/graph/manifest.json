@@ -1,0 +1,10 @@
+{
+  "schema": "graph-partial-v0.2",
+  "source": "synthetic demonstration",
+  "collected_at_utc": "2026-11-01T12:00:00+00:00",
+  "group_ids": [
+    "55555555-5555-4555-8555-555555555555",
+    "66666666-6666-4666-8666-666666666666"
+  ],
+  "coverage": "selected direct memberships only"
+}

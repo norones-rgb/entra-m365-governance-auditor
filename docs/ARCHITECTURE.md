@@ -59,3 +59,7 @@ Read-only export adapters should remain **optional**, run with explicitly grante
 ## v0.4 cross-source reconciliation
 
 `governance_auditor/reconcile.py` adds a **separate offline** workflow: Graph selected-group snapshot (`users.csv`, `groups.csv`, `identity_aliases.csv`, `manifest.json`) + PnP selected-site snapshot (`sharepoint_group_members.csv`, `site_collection_admins.csv`, `root_web_role_assignments.csv`, `manifest.json`) -> exact ID or UPN/mail matches -> `identity_matches.csv`, `manifest.json`, `dashboard.html`. It intentionally does **not** feed reconstructed permissions into the original `scan` rules, because group rosters, nested memberships, inherited permissions and approval evidence are absent. The output is a partial match/evidence map, not effective access. See [RECONCILIATION](RECONCILIATION.md).
+
+## v0.5 selected-scope change comparison
+
+`governance_auditor.snapshot_diff` consumes two normalized local Graph snapshot directories and, optionally, a matched pair of selected-site PnP export directories. The module validates source manifests, chronology, CSV keys and records, computes direct-observation deltas only for overlapping selection scope, and writes the results into a fresh output directory via staged rename. A changed group selection or site URL produces coverage warnings, **not** implied grants/revocations. No live calls, cross-tenant joins, effective-permission reconstruction, or access changes are performed. See [CHANGE_DETECTION](CHANGE_DETECTION.md).

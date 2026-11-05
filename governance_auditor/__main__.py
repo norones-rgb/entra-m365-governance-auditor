@@ -32,7 +32,25 @@ def main(argv: list[str] | None = None) -> int:
     recon.add_argument("--graph", type=Path, required=True, help="Selected-group Graph export directory")
     recon.add_argument("--sharepoint", type=Path, required=True, help="Selected-site PnP export directory")
     recon.add_argument("--output", type=Path, required=True, help="Fresh local report directory")
+    drift = sub.add_parser("compare-snapshots", help="Offline selected-scope Entra/SharePoint drift report")
+    drift.add_argument("--before-graph", type=Path, required=True, help="Earlier selected-group Graph export")
+    drift.add_argument("--after-graph", type=Path, required=True, help="Later selected-group Graph export")
+    drift.add_argument("--before-sharepoint", type=Path, help="Optional earlier selected-site PnP export")
+    drift.add_argument("--after-sharepoint", type=Path, help="Optional later selected-site PnP export")
+    drift.add_argument("--output", type=Path, required=True, help="New local comparison report directory")
     args = parser.parse_args(argv)
+    if args.command == "compare-snapshots":
+        from .snapshot_diff import ComparisonError, compare_snapshots
+        try:
+            summary = compare_snapshots(args.before_graph, args.after_graph, args.output,
+                                        args.before_sharepoint, args.after_sharepoint)
+        except (OSError, ValueError, csv.Error, ComparisonError) as exc:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            return 2
+        print(f"Observed changes: {summary['changes']} | Non-comparable scopes: {summary['non_comparable_scopes']}")
+        print("Offline direct observations only; not effective access or proof of revocation.")
+        print(f"Local report: {args.output}")
+        return 0
     if args.command == "reconcile-sharepoint":
         from .reconcile import ReconcileError, reconcile
         try:
